@@ -22,7 +22,7 @@ def index():
 
 @app.route('/login')
 def login():
-    scope = 'user-read-private user-read-email'
+    scope = 'user-read-private user-read-email user-modify-playback-state user-read-currently-playing user-read-recently-played user-top-read'
 
     params = {
         'client_id': CLIENT_ID,
@@ -71,7 +71,7 @@ def get_playlists():
         'Authorization': f"Bearer {session['access_token']}"
     }
 
-    response = request.get(API_BASE_URL + 'me/playlists', headers=headers)
+    response = requests.get(API_BASE_URL + 'me/playlists', headers=headers)
     playlists = response.json()
 
     return jsonify(playlists)
