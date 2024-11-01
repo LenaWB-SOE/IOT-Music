@@ -98,13 +98,22 @@ def refresh_token():
         return redirect('/play-album')
     
 @app.route('/play-album')
-def play_song():
+def play_album():
+    if 'access_token' not in session:
+        return redirect('/login')
+    
+    if datetime.now().timestamp() > session['expires_at']:
+        return redirect('/refresh-token')
+    
     headers = {
-        'context_uri': 'spotify:album:287QQ922OsJYh8aFNGdJG5',
-        'position_ms': 0
+        'Authorization': f"Bearer {session['access_token']}"
     }
 
-    response = requests.get(API_BASE_URL + 'me/player/play', headers=headers)
+    req_body = {
+        'context_uri': 'spotify:album:287QQ922OsJYh8aFNGdJG5',
+    }
+
+    response = requests.get(API_BASE_URL + 'me/player/play', headers=headers, data=req_body)
     player = response.json()
 
     return jsonify(player)
