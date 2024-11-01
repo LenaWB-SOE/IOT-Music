@@ -51,7 +51,6 @@ def get_songs_by_artist(token, artist_id):
     return json_result
 
 
-
 token = get_token()
 result = search_for_artist(token, "Wolf Alice")
 artist_id = result["id"]
@@ -62,6 +61,3 @@ for idx, song in enumerate(songs):
 
 #git config --global user.email "you@example.com"
 #git config --global user.name "Your Name"
-
-#test
-print("hello world")
