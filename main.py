@@ -57,7 +57,7 @@ def callback():
         session['refresh_token'] = token_info['refresh_token']
         session['expires_at'] = datetime.now().timestamp() + token_info['expires_in'] #creating a timestamp of when the token will expire
 
-        return redirect('/playlists')
+        return redirect('/play-album')
     
 @app.route('/playlists')
 def get_playlists():
@@ -95,7 +95,19 @@ def refresh_token():
         session['access_token'] = new_token_info['access_token']
         session['expires_at'] = datetime.now().timestamp() + new_token_info['expires_in']
 
-        return redirect('/playlists')
+        return redirect('/play-album')
+    
+@app.route('/play-album')
+def play_song():
+    headers = {
+        'context_uri': 'spotify:album:287QQ922OsJYh8aFNGdJG5',
+        'position_ms': 0
+    }
+
+    response = requests.get(API_BASE_URL + 'me/player/play', headers=headers)
+    player = response.json()
+
+    return jsonify(player)
     
 
 if __name__ == '__main__':
