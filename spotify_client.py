@@ -37,11 +37,6 @@ class SpotifyClient:
 
     def get_current_track(self):
         response1 = requests.get(f"{API_BASE_URL}me/player/currently-playing", headers=self.get_headers())
-        #response2 = requests.get(f"{API_BASE_URL}me/player", headers=self.get_headers())
-        #print(response2.json)
-        #print(response2.json()["progress_ms"])
         if response1.status_code == 200:
-            return response1.json()["item"]["name"], response1.json()["item"]["id"], response1.json()["item"]["duration_ms"]
-        # if response2.status_code == 200:
-        #     return response2.json()["item"]["TrackObject"]["name"], response2.json()["item"]["TrackObject"]["id"], response2.json()["item"]["TrackObject"]["duration_ms"]
+            return response1.json()["item"]["name"], response1.json()["item"]["id"], response1.json()["item"]["duration_ms"], response1.json()["progress_ms"]
         return None
