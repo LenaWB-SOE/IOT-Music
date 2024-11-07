@@ -50,10 +50,10 @@ def callback():
         session['refresh_token'] = token_info['refresh_token']
         session['expires_at'] = datetime.now().timestamp() + token_info['expires_in'] #creating a timestamp of when the token will expire
 
-        return redirect('/start-application')
+        return redirect('/run-application')
 
-@app.route('/start-application')
-def start_application():
+@app.route('/run-application')
+def run_application():
     #creating an instance of the SpotifyClient class
     spotify_client = SpotifyClient(
         access_token=session['access_token'],
@@ -61,19 +61,26 @@ def start_application():
         expires_at=session['expires_at']
     )
 
+    record_music(spotify_client)
+
+    #response = spotify_client.play_album('spotify:album:2iXwKeYYKuXjalgAXtx9sd')
+    #return jsonify(response.json() if response.status_code == 200 else {"message": "Playback started successfully."})
+
+def record_music(spotify_client):
     last_update_time = datetime.now().timestamp()
     counter = 0
+    update_interval = 0
     while True:
         current_time = datetime.now().timestamp()
-        if current_time - last_update_time >= 120 or counter == 0:
+        if current_time - last_update_time >= update_interval or counter == 0:
             response = spotify_client.get_current_track()
             print(response)
 
             last_update_time = current_time
+            update_interval = response[2]
+            print(update_interval)
             counter += 1
 
-    #response = spotify_client.play_album('spotify:album:2iXwKeYYKuXjalgAXtx9sd')
-    #return jsonify(response.json() if response.status_code == 200 else {"message": "Playback started successfully."})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
