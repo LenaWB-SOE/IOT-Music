@@ -101,7 +101,7 @@ def record_music(spotify_client):
     counter = 0
     update_interval = 60
 
-    fields = ['song_name', 'song_id']
+    fields = ['song_name', 'song_id', 'song_duration', 'progress_through_song']
     filename = "Songs_I_Played.csv"
 
     with open(filename, 'w') as csvfile:
@@ -113,15 +113,17 @@ def record_music(spotify_client):
             if current_time - last_update_time >= update_interval or counter == 0:
                 response = spotify_client.get_current_track()
                 print(response)
-                if response != last_response:
+                if response != None and (counter == 0 or response['song_id'] != last_response['song_id']):
+                    print("yes")
                     row = response
                     writer.writerow(row)
-                    time.sleep(update_interval)
+                    csvfile.flush()
+                    print("successful write")
+                    last_response = response
+                    #time.sleep(update_interval)
 
-                last_response = response
                 last_update_time = current_time
                 #update_interval = 60
-                print(update_interval)
                 counter += 1
 
 
