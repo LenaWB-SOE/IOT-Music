@@ -101,7 +101,7 @@ def record_music(spotify_client):
     counter = 0
     update_interval = 60
 
-    fields = ['song_name', 'song_id', 'song_duration', 'progress_through_song']
+    fields = ['date', 'time', 'song_name', 'song_id', 'song_duration', 'progress_through_song']
     filename = "Songs_I_Played.csv"
 
     with open(filename, 'w') as csvfile:

@@ -1,5 +1,5 @@
 import requests
-import datetime
+from datetime import datetime
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL
 
 class SpotifyClient:
@@ -39,8 +39,8 @@ class SpotifyClient:
         response = requests.get(f"{API_BASE_URL}me/player/currently-playing", headers=self.get_headers())
         if response.status_code == 200:
             current_track = {
-                'date': datetime.datetime.now().strftime('%Y-%m-%d'),
-                'time': datetime.datetime.now().strftime('%H-%M-%S'),
+                'date': datetime.now().strftime('%Y-%m-%d'),
+                'time': datetime.now().strftime('%H:%M'),
                 'song_name': response.json()["item"]["name"],
                 'song_id': response.json()["item"]["id"],
                 'song_duration': response.json()["item"]["duration_ms"],
