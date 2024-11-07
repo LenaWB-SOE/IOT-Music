@@ -77,7 +77,7 @@ def record_music(spotify_client):
             print(response)
 
             last_update_time = current_time
-            update_interval = response[2]-response[3]
+            update_interval = response[2]
             print(update_interval)
             counter += 1
 

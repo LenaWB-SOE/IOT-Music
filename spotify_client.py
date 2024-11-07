@@ -39,7 +39,7 @@ class SpotifyClient:
         response1 = requests.get(f"{API_BASE_URL}me/player/currently-playing", headers=self.get_headers())
         response2 = requests.get(f"{API_BASE_URL}me/player", headers=self.get_headers())
         print(response2)
-        print(response2.json()["progress_ms"])
+        #print(response2.json()["progress_ms"])
         if response1.status_code == 200:
             return response1.json()["item"]["name"], response1.json()["item"]["id"], response1.json()["item"]["duration_ms"]
         return None
