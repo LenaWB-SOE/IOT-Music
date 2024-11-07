@@ -57,7 +57,7 @@ def callback():
         session['refresh_token'] = token_info['refresh_token']
         session['expires_at'] = datetime.now().timestamp() + token_info['expires_in'] #creating a timestamp of when the token will expire
 
-        return redirect('/play-album')
+        return redirect('/record-music')
     
 @app.route('/refresh-token')
 def refresh_token():
@@ -78,7 +78,7 @@ def refresh_token():
         session['access_token'] = new_token_info['access_token']
         session['expires_at'] = datetime.now().timestamp() + new_token_info['expires_in']
 
-        return redirect('/play-album')
+        return redirect('/record-music')
     
 @app.route('/playlists')
 def get_playlists():
@@ -132,9 +132,26 @@ def play_album():
 
     return jsonify(player)
 
+recording_interval = 120
+
+@app.route('/record-music')
 def music_recording ():
-    print("helllo")
-    
+    last_update_time = datetime.now().timestamp()
+    counter = 0
+
+    headers = {
+        'Authorization': f"Bearer {session['access_token']}"
+    }
+
+    while True:
+        current_time = datetime.now().timestamp()
+        if current_time - last_update_time >= recording_interval or counter == 0:
+            response = requests.get(API_BASE_URL + 'me/player/currently-playing', headers=headers)
+            current_track_name = response.json()["item"]["name"]
+            current_track_id = response.json()["item"]["id"]
+            print(current_track_name, current_track_id)
+            counter += 1
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
