@@ -111,6 +111,7 @@ def play_album():
 
     req_body = {
         'context_uri': 'spotify:album:287QQ922OsJYh8aFNGdJG5',
+        'position_ms': 0
     }
 
     response = requests.get(API_BASE_URL + 'me/player/play', headers=headers, data=req_body)
