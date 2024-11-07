@@ -57,7 +57,7 @@ def callback():
         session['refresh_token'] = token_info['refresh_token']
         session['expires_at'] = datetime.now().timestamp() + token_info['expires_in'] #creating a timestamp of when the token will expire
 
-        return redirect('/record-music')
+        return redirect('/play-album')
     
 @app.route('/refresh-token')
 def refresh_token():
@@ -78,7 +78,7 @@ def refresh_token():
         session['access_token'] = new_token_info['access_token']
         session['expires_at'] = datetime.now().timestamp() + new_token_info['expires_in']
 
-        return redirect('/record-music')
+        return redirect('/play-album')
     
 @app.route('/playlists')
 def get_playlists():
@@ -150,6 +150,8 @@ def music_recording ():
             current_track_name = response.json()["item"]["name"]
             current_track_id = response.json()["item"]["id"]
             print(current_track_name, current_track_id)
+
+            last_update_time = current_time
             counter += 1
 
 
