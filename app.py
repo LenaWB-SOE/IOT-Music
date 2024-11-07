@@ -1,10 +1,11 @@
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY
-
+from spotify_client import SpotifyClient
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
-from spotify_client import SpotifyClient
+import time
 import urllib.parse
+import csv
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -96,18 +97,32 @@ def run_application():
 
 def record_music(spotify_client):
     last_update_time = datetime.now().timestamp()
+    last_response = None
     counter = 0
-    update_interval = 0
-    while True:
-        current_time = datetime.now().timestamp()
-        if current_time - last_update_time >= update_interval or counter == 0:
-            response = spotify_client.get_current_track()
-            print(response)
+    update_interval = 60
 
-            last_update_time = current_time
-            update_interval = response[2]
-            print(update_interval)
-            counter += 1
+    fields = ['song_name', 'song_id']
+    filename = "Songs_I_Played.csv"
+
+    with open(filename, 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fields)
+        writer.writeheader()
+
+        while True:
+            current_time = datetime.now().timestamp()
+            if current_time - last_update_time >= update_interval or counter == 0:
+                response = spotify_client.get_current_track()
+                print(response)
+                if response != last_response:
+                    row = response
+                    writer.writerow(row)
+                    time.sleep(update_interval)
+
+                last_response = response
+                last_update_time = current_time
+                #update_interval = 60
+                print(update_interval)
+                counter += 1
 
 
 if __name__ == '__main__':
