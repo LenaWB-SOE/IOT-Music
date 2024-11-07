@@ -51,9 +51,37 @@ def callback():
         session['expires_at'] = datetime.now().timestamp() + token_info['expires_in'] #creating a timestamp of when the token will expire
 
         return redirect('/run-application')
+    
+@app.route('/refresh-token')
+def refresh_token():
+    if 'refresh_token' not in session:
+        return redirect('/login')
+    
+    if datetime.now().timestamp() > session['expires_at']:
+        req_body = {
+            'grant_type': 'refresh_token',
+            'refresh_token': session['refresh_token'],
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET
+        }
+
+        response = requests.post(TOKEN_URL, data=req_body)
+        new_token_info = response.json()
+
+        session['access_token'] = new_token_info['access_token']
+        session['expires_at'] = datetime.now().timestamp() + new_token_info['expires_in']
+
+        return redirect('/run-application')
 
 @app.route('/run-application')
 def run_application():
+    if 'access_token' not in session:
+        return redirect('/login')
+    
+    if datetime.now().timestamp() > session['expires_at']:
+        print("refresh token")
+        return redirect('/refresh-token')
+    
     #creating an instance of the SpotifyClient class
     spotify_client = SpotifyClient(
         access_token=session['access_token'],
