@@ -59,23 +59,6 @@ def callback():
 
         return redirect('/play-album')
     
-@app.route('/playlists')
-def get_playlists():
-    if 'access_token' not in session:
-        return redirect('/login')
-    
-    if datetime.now().timestamp() > session['expires_at']:
-        return redirect('/refresh-token')
-    
-    headers = {
-        'Authorization': f"Bearer {session['access_token']}"
-    }
-
-    response = requests.get(API_BASE_URL + 'me/playlists', headers=headers)
-    playlists = response.json()
-
-    return jsonify(playlists)
-
 @app.route('/refresh-token')
 def refresh_token():
     if 'refresh_token' not in session:
@@ -97,6 +80,23 @@ def refresh_token():
 
         return redirect('/play-album')
     
+@app.route('/playlists')
+def get_playlists():
+    if 'access_token' not in session:
+        return redirect('/login')
+    
+    if datetime.now().timestamp() > session['expires_at']:
+        return redirect('/refresh-token')
+    
+    headers = {
+        'Authorization': f"Bearer {session['access_token']}"
+    }
+
+    response = requests.get(API_BASE_URL + 'me/playlists', headers=headers)
+    playlists = response.json()
+
+    return jsonify(playlists)
+    
 @app.route('/play-album')
 def play_album():
     if 'access_token' not in session:
@@ -110,14 +110,30 @@ def play_album():
     }
 
     req_body = {
-        'context_uri': 'spotify:album:287QQ922OsJYh8aFNGdJG5',
-        'position_ms': 0
+        'context_uri': 'spotify:album:2iXwKeYYKuXjalgAXtx9sd'
     }
+    # Romance by Fontaines: spotify:album:287QQ922OsJYh8aFNGdJG5
+    # Clouds in the sky they will all by Porridge Radio: spotify:album:2iXwKeYYKuXjalgAXtx9sd
 
-    response = requests.get(API_BASE_URL + 'me/player/play', headers=headers, data=req_body)
-    player = response.json()
+    response = requests.put(API_BASE_URL + 'me/player/play', headers=headers, json=req_body)
+
+    # Handle response based on content presence and status code
+    if response.status_code == 204:
+        # 204 No Content means playback started successfully
+        player = {"message": "Playback started successfully."}
+    elif response.status_code == 200:
+        try:
+            player = response.json()
+        except requests.exceptions.JSONDecodeError:
+            player = {"message": "Playback started, but no JSON response."}
+    else:
+        # Handle unexpected responses
+        player = {"error": response.status_code, "message": response.text}
 
     return jsonify(player)
+
+def music_recording ():
+    print("helllo")
     
 
 if __name__ == '__main__':
