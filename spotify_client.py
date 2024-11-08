@@ -74,7 +74,7 @@ class SpotifyClient:
     def create_recommendation(self, song_id):
         response = requests.get(f"{API_BASE_URL}recommendations", headers=self.get_headers(), json={'limit': 1,'seed_tracks': song_id})
         recommended_song = {
-            'song_name': response.json()['tracks']['name'],
-            'song_uri': response.json()['tracks']['uri'],
+            'song_name': response.json()['tracks'][0]['name'],
+            'song_uri': response.json()['tracks'][0]['uri'],
                             }
         return recommended_song
