@@ -59,7 +59,7 @@ class SpotifyClient:
                 'acousticness': response.json()['acousticness'],
                 'danceability': response.json()['danceability'],
                 'energy': response.json()['energy'],
-                'instrumentalness': response.json()['intrumentalness'],
+                'instrumentalness': response.json()['instrumentalness'],
                 'loudness': response.json()['loudness'],
                 'tempo': response.json()['tempo'],
                 'valence': response.json()['valence']
