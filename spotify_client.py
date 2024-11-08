@@ -42,7 +42,7 @@ class SpotifyClient:
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'time': datetime.now().strftime('%H:%M'),
                 'song_name': response.json()["item"]["name"],
-                'artist': response.json()["item"]["artists"]["name"],
+                'artist': response.json()["item"]["artists"][0]["name"],
                 'song_id': response.json()["item"]["id"],
                 'song_duration': response.json()["item"]["duration_ms"],
                 'progress_through_song': response.json()["progress_ms"]
