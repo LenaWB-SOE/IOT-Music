@@ -1,5 +1,6 @@
-from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY
+from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_WRITE_API_KEY
 from spotify_client import SpotifyClient
+from thingspeak_client import ThingSpeakClient
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
@@ -90,12 +91,14 @@ def run_application():
         expires_at=session['expires_at']
     )
 
-    record_music(spotify_client)
+    thingspeak_client = ThingSpeakClient(TS_WRITE_API_KEY)
+
+    record_music(spotify_client, thingspeak_client)
 
     #response = spotify_client.play_album('spotify:album:2iXwKeYYKuXjalgAXtx9sd')
     #return jsonify(response.json() if response.status_code == 200 else {"message": "Playback started successfully."})
 
-def record_music(spotify_client):
+"""def record_music(spotify_client):
     last_update_time = datetime.now().timestamp()
     last_response = None
     counter = 0
@@ -124,7 +127,29 @@ def record_music(spotify_client):
 
                 last_update_time = current_time
                 #update_interval = 60
-                counter += 1
+                counter += 1"""
+
+def record_music(spotify_client, thingspeak_client):
+    last_update_time = datetime.now().timestamp()
+    last_response = None
+    counter = 0
+    update_interval = 60
+
+    while True:
+        current_time = datetime.now().timestamp()
+        if current_time - last_update_time >= update_interval or counter == 0:
+            response = spotify_client.get_current_track()
+            print(response)
+            if response != None and (counter == 0 or response['song_id'] != last_response['song_id']):
+                print("yes")
+                thingspeak_client.update_channel(response)
+                print("successful write")
+                last_response = response
+                #time.sleep(update_interval)
+
+            last_update_time = current_time
+            #update_interval = 60
+            counter += 1
 
 
 if __name__ == '__main__':
