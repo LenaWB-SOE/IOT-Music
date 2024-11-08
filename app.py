@@ -166,11 +166,15 @@ def record_music(spotify_client, thingspeak_client):
             track_features = spotify_client.get_track_features(current_track)
             print(track_features)
             if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
-                print("yes")
-                print(current_track.get('song_name'))
+                print(f"Current Track: {current_track.get('song_name')}")
                 thingspeak_client.update_channel(track_features)
-                print("successful write")
+
+                recommendation = spotify_client.create_recommendation(current_track['song_id'])
+                print(f"Song recommendation: {recommendation['song_name']}")
+                response = spotify_client.queue_song(recommendation['song_uri'])
+                print(response)
                 last_track = current_track
+
                 #time.sleep(update_interval)
 
             last_update_time = current_time

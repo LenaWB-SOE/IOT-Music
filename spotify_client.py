@@ -66,4 +66,15 @@ class SpotifyClient:
             }
             return song_features
         return None
-
+    
+    def queue_song(self, song_uri):
+        response = requests.post(f"{API_BASE_URL}me/player/queue/", headers=self.get_headers(), json={'context_uri': song_uri})
+        return response
+    
+    def create_recommendation(self, song_id):
+        response = requests.get(f"{API_BASE_URL}recommendations", headers=self.get_headers(), json={'limit': 1,'seed_tracks': song_id})
+        recommended_song = {
+            'song_name': response.json()['tracks']['name'],
+            'song_uri': response.json()['tracks']['uri'],
+                            }
+        return recommended_song
