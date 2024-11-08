@@ -129,7 +129,7 @@ def run_application():
                 #update_interval = 60
                 counter += 1"""
 
-def record_music(spotify_client, thingspeak_client):
+"""def record_music(spotify_client, thingspeak_client):
     last_update_time = datetime.now().timestamp()
     last_response = None
     counter = 0
@@ -146,6 +146,31 @@ def record_music(spotify_client, thingspeak_client):
                 thingspeak_client.update_channel(response)
                 print("successful write")
                 last_response = response
+                #time.sleep(update_interval)
+
+            last_update_time = current_time
+            #update_interval = 60
+            counter += 1"""
+
+def record_music(spotify_client, thingspeak_client):
+    last_update_time = datetime.now().timestamp()
+    last_track = None
+    counter = 0
+    update_interval = 60
+
+    while True:
+        current_time = datetime.now().timestamp()
+        if current_time - last_update_time >= update_interval or counter == 0:
+            current_track = spotify_client.get_current_track()
+            print(current_track)
+            track_features = spotify_client.get_track_features(current_track)
+            print(track_features)
+            if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
+                print("yes")
+                print(current_track.get('song_name'))
+                thingspeak_client.update_channel(current_track)
+                print("successful write")
+                last_track = current_track
                 #time.sleep(update_interval)
 
             last_update_time = current_time

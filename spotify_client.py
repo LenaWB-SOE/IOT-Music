@@ -48,3 +48,21 @@ class SpotifyClient:
             }
             return current_track
         return None
+    
+    def get_track_features(self, track):
+        SONG_ID = track['song_id']
+        response = requests.get(f"{API_BASE_URL}audio-features/{SONG_ID}", headers=self.get_headers())
+        if response.status_code == 200:
+            song_features = {
+                'song_name': track['song_name'],
+                'acousticness': response.json()['acousticness'],
+                'danceability': response.json()['danceability'],
+                'energy': response.json()['instrumentalness'],
+                'loudness': response.json()['loudness'],
+                'speechiness': response.json()['speechiness'],
+                'tempo': response.json()['tempo'],
+                'valence': response.json()['valence']
+            }
+            return song_features
+        return None
+
