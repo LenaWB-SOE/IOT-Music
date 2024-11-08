@@ -13,18 +13,19 @@ class ThingSpeakClient:
         """
         payload = {
             'api_key': self.api_key,
-            'Date': data_dict.get('date'),
-            'Time': data_dict.get('time'),
-            'Song Name': data_dict.get('song_name'),
-            'Song ID': data_dict.get('song_id'),
-            'Song Duration': data_dict.get('song_duration'),
-            'Time into song': data_dict.get('progress_through_song')
+            'field1': data_dict.get('date'),
+            'field2': data_dict.get('time'),
+            'field3': data_dict.get('song_name'),
+            'field4': data_dict.get('song_id'),
+            'field5': data_dict.get('song_duration'),
+            'field6': data_dict.get('progress_through_song')
         }
         
         try:
             response = requests.post(self.base_url, data=payload)
             if response.status_code == 200:
                 print("Data successfully updated to ThingSpeak!")
+                print(f"Response Content: {response.text}")
             else:
                 print(f"Failed to update data. Status code: {response.status_code}")
                 print(response.text)

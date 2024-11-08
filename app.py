@@ -142,6 +142,7 @@ def record_music(spotify_client, thingspeak_client):
             print(response)
             if response != None and (counter == 0 or response['song_id'] != last_response['song_id']):
                 print("yes")
+                print(response.get('song_name'))
                 thingspeak_client.update_channel(response)
                 print("successful write")
                 last_response = response
