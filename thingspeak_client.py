@@ -15,7 +15,7 @@ class ThingSpeakClient:
             'api_key': self.api_key,
             'field1': data_dict.get('song')[0],
             'field2': data_dict.get('acousticness'),
-            'field3': data_dict.get('dancebility'),
+            'field3': data_dict.get('danceability'),
             'field4': data_dict.get('energy'),
             'field5': data_dict.get('instrumentalness'),
             'field6': data_dict.get('loudness'),
