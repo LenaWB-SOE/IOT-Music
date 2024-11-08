@@ -13,12 +13,14 @@ class ThingSpeakClient:
         """
         payload = {
             'api_key': self.api_key,
-            'field1': data_dict.get('date'),
-            'field2': data_dict.get('time'),
-            'field3': data_dict.get('song_name'),
-            'field4': data_dict.get('song_id'),
-            'field5': data_dict.get('song_duration'),
-            'field6': data_dict.get('progress_through_song')
+            'field1': data_dict.get('song'),
+            'field2': data_dict.get('acousticness'),
+            'field3': data_dict.get('dancebility'),
+            'field4': data_dict.get('energy'),
+            'field5': data_dict.get('instrumentalness'),
+            'field6': data_dict.get('loudness'),
+            'field7': data_dict.get('tempo'),
+            'field8': data_dict.get('valence')
         }
         
         try:

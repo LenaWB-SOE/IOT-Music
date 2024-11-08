@@ -168,7 +168,7 @@ def record_music(spotify_client, thingspeak_client):
             if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
                 print("yes")
                 print(current_track.get('song_name'))
-                thingspeak_client.update_channel(current_track)
+                thingspeak_client.update_channel(track_features)
                 print("successful write")
                 last_track = current_track
                 #time.sleep(update_interval)

@@ -42,6 +42,7 @@ class SpotifyClient:
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'time': datetime.now().strftime('%H:%M'),
                 'song_name': response.json()["item"]["name"],
+                'artist': response.json()["item"]["artists"],
                 'song_id': response.json()["item"]["id"],
                 'song_duration': response.json()["item"]["duration_ms"],
                 'progress_through_song': response.json()["progress_ms"]
@@ -54,12 +55,12 @@ class SpotifyClient:
         response = requests.get(f"{API_BASE_URL}audio-features/{SONG_ID}", headers=self.get_headers())
         if response.status_code == 200:
             song_features = {
-                'song_name': track['song_name'],
+                'song': [track['song_name'], track['artist'], track['song_id']],
                 'acousticness': response.json()['acousticness'],
                 'danceability': response.json()['danceability'],
-                'energy': response.json()['instrumentalness'],
+                'energy': response.json()['energy'],
+                'instrumentalness': response.json()['intrumentalness'],
                 'loudness': response.json()['loudness'],
-                'speechiness': response.json()['speechiness'],
                 'tempo': response.json()['tempo'],
                 'valence': response.json()['valence']
             }
