@@ -99,6 +99,7 @@ def run_application():
     #return jsonify(response.json() if response.status_code == 200 else {"message": "Playback started successfully."})
 
 """def record_music(spotify_client):
+    #writing songs to csv file
     last_update_time = datetime.now().timestamp()
     last_response = None
     counter = 0
@@ -129,29 +130,6 @@ def run_application():
                 #update_interval = 60
                 counter += 1"""
 
-"""def record_music(spotify_client, thingspeak_client):
-    last_update_time = datetime.now().timestamp()
-    last_response = None
-    counter = 0
-    update_interval = 60
-
-    while True:
-        current_time = datetime.now().timestamp()
-        if current_time - last_update_time >= update_interval or counter == 0:
-            response = spotify_client.get_current_track()
-            print(response)
-            if response != None and (counter == 0 or response['song_id'] != last_response['song_id']):
-                print("yes")
-                print(response.get('song_name'))
-                thingspeak_client.update_channel(response)
-                print("successful write")
-                last_response = response
-                #time.sleep(update_interval)
-
-            last_update_time = current_time
-            #update_interval = 60
-            counter += 1"""
-
 def record_music(spotify_client, thingspeak_client):
     last_update_time = datetime.now().timestamp()
     last_track = None
@@ -165,8 +143,9 @@ def record_music(spotify_client, thingspeak_client):
         if current_time - last_update_time >= update_interval or counter == 0:
             current_track = spotify_client.get_current_track()
             print(current_track)
-            track_features = spotify_client.get_track_features(current_track)
-            print(track_features)
+            if current_track != None:
+                track_features = spotify_client.get_track_features(current_track)
+                print(track_features)
             if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
                 print(f"Current Track: {current_track.get('song_name')}")
                 thingspeak_client.update_channel(track_features)
