@@ -25,6 +25,7 @@ class SpotifyClient:
         token_info = response.json()
         self.access_token = token_info['access_token']
         self.expires_at = datetime.now().timestamp() + token_info['expires_in']
+        return self.refresh_token
 
     def get_headers(self):
         if self.is_token_expired():
