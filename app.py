@@ -136,10 +136,6 @@ def record_music(spotify_client, thingspeak_client):
     counter = 0
     update_interval = 60
 
-    waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
-    response = spotify_client.queue_song(waxwing)
-    print(response)
-
     #print(spotify_client.top_songs())
 
     while True:
@@ -155,9 +151,6 @@ def record_music(spotify_client, thingspeak_client):
                 print(f"Current Track: {current_track.get('song_name')}")
                 thingspeak_client.update_channel(track_features)
 
-                # recommendation = spotify_client.create_recommendation(current_track['song_id'])
-                # print(f"Song recommendation: {recommendation['song_name']}")
-
                 last_track = current_track
                 #time.sleep(update_interval)
 
@@ -165,6 +158,12 @@ def record_music(spotify_client, thingspeak_client):
             #update_interval = 60
             counter += 1
 
+def play_music(spotify_client, thingspeak_client):
+    # recommendation = spotify_client.create_recommendation(current_track['song_id'])
+    # print(f"Song recommendation: {recommendation['song_name']}")
+    waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
+    response = spotify_client.queue_song(waxwing)
+    print(response)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
