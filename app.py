@@ -158,7 +158,7 @@ def record_music(spotify_client, thingspeak_client):
     counter = 0
     update_interval = 60
 
-    print(spotify_client.top_songs())
+    #print(spotify_client.top_songs())
 
     while True:
         current_time = datetime.now().timestamp()
