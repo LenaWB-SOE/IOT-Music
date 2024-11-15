@@ -11,7 +11,7 @@ class SpotifyClient:
     def is_token_expired(self):
         return datetime.now().timestamp() > self.expires_at
 
-    def refresh_token(self):
+    def refresh_token_func(self):
         if not self.refresh_token:
             raise Exception("No refresh token available")
 
@@ -29,7 +29,7 @@ class SpotifyClient:
 
     def get_headers(self):
         if self.is_token_expired():
-            self.refresh_token()
+            self.refresh_token_func()
         return {'Authorization': f"Bearer {self.access_token}"}
 
     def play_album(self, album_uri):
