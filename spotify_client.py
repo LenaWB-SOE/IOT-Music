@@ -69,6 +69,8 @@ class SpotifyClient:
     
     def queue_song(self, song_uri): #not tested because below didn't work
         response = requests.post(f"{API_BASE_URL}me/player/queue/", headers=self.get_headers(), json={'context_uri': song_uri})
+        if response.status_code == 204:
+            print("Song queued")
         return response
     
     def create_recommendation(self, song_id):

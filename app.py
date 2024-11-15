@@ -136,10 +136,15 @@ def record_music(spotify_client, thingspeak_client):
     counter = 0
     update_interval = 60
 
+    waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
+    response = spotify_client.queue_song(waxwing)
+    print(response)
+
     #print(spotify_client.top_songs())
 
     while True:
         current_time = datetime.now().timestamp()
+        
         if current_time - last_update_time >= update_interval or counter == 0:
             current_track = spotify_client.get_current_track()
             print(current_track)
@@ -152,8 +157,6 @@ def record_music(spotify_client, thingspeak_client):
 
                 # recommendation = spotify_client.create_recommendation(current_track['song_id'])
                 # print(f"Song recommendation: {recommendation['song_name']}")
-                # response = spotify_client.queue_song(recommendation['song_uri'])
-                # print(response)
 
                 last_track = current_track
                 #time.sleep(update_interval)
