@@ -8,4 +8,4 @@ while True:
 	# print("You moved")
 	# pir.wait_for_no_motion()
     print(pir.value)
-    time.sleep(0.01)
+    time.sleep(0.1)
