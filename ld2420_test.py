@@ -9,12 +9,19 @@ ser = serial.Serial(
 
 print("LD2420 Test: Listening for data...")
 
-try:
-    while True:
-        if ser.in_waiting > 0:
-            data = ser.read(ser.in_waiting).hex()  # Read all available data
-            print("Received Data:", data)
+# try:
+#     while True:
+#         if ser.in_waiting > 0:
+#             data = ser.read(ser.in_waiting).hex()  # Read all available data
+#             print("Received Data:", data)
 
-except KeyboardInterrupt:
-    print("Exiting...")
-    ser.close()
+# except KeyboardInterrupt:
+#     print("Exiting...")
+#     ser.close()
+
+
+while True:
+    raw_data = ser.read(ser.in_waiting or 1)  # Read available data
+    if raw_data:
+        print(raw_data)
+
