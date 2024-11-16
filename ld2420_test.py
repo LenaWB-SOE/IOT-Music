@@ -51,6 +51,8 @@ def parse_sensor_data(buffer):
                 continue  # Ignore invalid data
         elif "ON" in packet:
             results.append("ON")
+        elif "OFF" in packet:
+            results.append("OFF")
     return results, packets[-1]  # Return results and the last partial packet
 
 # Initialize an empty buffer
@@ -61,7 +63,6 @@ while True:
     raw_data = ser.read(ser.in_waiting or 1)
     if raw_data:
         buffer += raw_data  # Append new data to the buffer
-        print(buffer)
 
         # Parse the buffer
         parsed_data, remaining_buffer = parse_sensor_data(buffer)
