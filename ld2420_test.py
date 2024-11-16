@@ -52,6 +52,7 @@ while True:
     raw_data = ser.read(ser.in_waiting or 1)
     if raw_data:
         buffer += raw_data  # Append new data to the buffer
+        print(buffer)
 
         # Parse the buffer
         parsed_data, remaining_buffer = parse_sensor_data(buffer)
