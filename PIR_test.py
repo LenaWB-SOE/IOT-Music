@@ -1,7 +1,7 @@
 from gpiozero import MotionSensor
 import time
 
-pir = MotionSensor(4, None, None, 4)
+pir = MotionSensor(4, queue_len=4)
 
 while True:
 	# pir.wait_for_motion()
