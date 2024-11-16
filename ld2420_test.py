@@ -21,7 +21,7 @@ print("LD2420 Test: Listening for data...")
 
 
 while True:
-    raw_data = ser.read(ser.in_waiting or 1)  # Read available data
+    raw_data = ser.read(ser.in_waiting or 1).hex()  # Read available data
     if raw_data:
         print(raw_data)
 
