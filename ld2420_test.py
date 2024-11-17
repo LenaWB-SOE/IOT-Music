@@ -82,7 +82,7 @@ def parse_sensor_data(buffer):
     
     # Split by the delimiter (\r\n)
     packets = ascii_data.split("\r\n")
-    print(f"Packets: {packets}")
+    #print(f"Packets: {packets}")
     results = []
 
     for i, packet in enumerate(packets):
@@ -97,7 +97,7 @@ def parse_sensor_data(buffer):
             results.append("ON")
         elif "OFF" in packet:
             results.append("OFF")
-    return results  # Return results and the last partial packet
+    return results, packets[-1]  # Return results and the last partial packet
 
 # Initialize an empty buffer
 buffer = b""
@@ -107,14 +107,14 @@ while True:
     raw_data = ser.read(ser.in_waiting or 1)
     if raw_data:
         buffer += raw_data  # Append new data to the buffer
-        print(f"Buffer: {buffer}")
+        #print(f"Buffer: {buffer}")
 
         if b"\r\n" in buffer:
-            print("Parsing")
+            #print("Parsing")
             # Parse the buffer
-            parsed_data= parse_sensor_data(buffer)
-            # Reset buffer
-            buffer = b""
+            parsed_data, remaining_buffer = parse_sensor_data(buffer)
+            # Retain the remaining partial packet for the next loop
+            buffer = remaining_buffer.encode('utf-8', errors='ignore')
 
             # Process valid parsed data
             if parsed_data:
