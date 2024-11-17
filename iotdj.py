@@ -1,4 +1,4 @@
-from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_WRITE_API_KEY
+from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_MUSIC_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
 from flask import Flask, redirect, request, jsonify, session
@@ -8,6 +8,7 @@ import time
 import urllib.parse
 import csv
 import serial
+import statistics as st
 
 class iot_dj:
     def __init__(self, spotify_client, thingspeak_client):
@@ -37,7 +38,7 @@ class iot_dj:
                     print(track_features)
                 if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
                     print(f"Current Track: {current_track.get('song_name')}")
-                    self.thingspeak_client.update_channel(track_features)
+                    self.thingspeak_client.update_music_channel(track_features)
 
                     last_track = current_track
                     #time.sleep(update_interval)
@@ -120,8 +121,13 @@ class iot_dj:
 
         # Initialize an empty buffer
         buffer = b""
+        last_update_time = datetime.now().timestamp()
+        counter = 0
+        update_interval = 60
+        data = []
 
         while True:
+            current_time = datetime.now().timestamp()
             # Read available data from the serial port
             raw_data = ser.read(ser.in_waiting or 1)
             if raw_data:
@@ -138,3 +144,33 @@ class iot_dj:
                     # Process valid parsed data
                     if parsed_data:
                         print("Parsed Values:", parsed_data)
+                        if isinstance(parsed_data[0], int):
+                            data.append(parsed_data[0])
+
+            if current_time - last_update_time >= update_interval or counter == 0:
+                average = st.mean(data)
+                environment_dict = {
+                    'Light': 44,
+                    'Radar': average
+                }
+                self.thingspeak_client.update_environment_channel(environment_dict)
+                data = []
+
+def main():
+    #creating an instance of the SpotifyClient class
+    spotify_client = SpotifyClient(
+        access_token=session['access_token'],
+        refresh_token=session['refresh_token'],
+        expires_at=session['expires_at']
+    )
+
+    #creating an instance of the ThingSpeakClient class
+    thingspeak_client = ThingSpeakClient(TS_MUSIC_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
+
+    #creating an instance of the iot_dj class
+    IOT_DJ = iot_dj(spotify_client, thingspeak_client)
+
+    IOT_DJ.radar_readings()
+
+if __name__ == "__main__":
+    main()

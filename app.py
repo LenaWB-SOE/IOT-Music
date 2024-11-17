@@ -1,4 +1,4 @@
-from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_WRITE_API_KEY
+from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_MUSIC_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
 from flask import Flask, redirect, request, jsonify, session
@@ -93,7 +93,7 @@ def run_application():
     )
 
     #creating an instance of the ThingSpeakClient class
-    thingspeak_client = ThingSpeakClient(TS_WRITE_API_KEY)
+    thingspeak_client = ThingSpeakClient(TS_MUSIC_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     #creating an instance of the iot_dj class
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)

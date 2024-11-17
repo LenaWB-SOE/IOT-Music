@@ -11,7 +11,8 @@ TOKEN_URL = 'https://accounts.spotify.com/api/token'
 API_BASE_URL = 'https://api.spotify.com/v1/'
 SECRET_KEY = '2738174-1648172624-1267d'
 
-TS_WRITE_API_KEY = 'Q93TX2FQWU99TCBJ'
+TS_MUSIC_WRITE_API_KEY = 'Q93TX2FQWU99TCBJ'
+TS_EVIRON_WRITE_API_KEY = '3GJFOHYMTI621JM1'
 
 
 #Things to copy
