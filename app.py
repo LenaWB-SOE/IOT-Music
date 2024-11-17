@@ -7,6 +7,7 @@ from datetime import datetime
 import time
 import urllib.parse
 import csv
+from iotdj import iot_dj
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -91,79 +92,13 @@ def run_application():
         expires_at=session['expires_at']
     )
 
+    #creating an instance of the ThingSpeakClient class
     thingspeak_client = ThingSpeakClient(TS_WRITE_API_KEY)
 
-    record_music(spotify_client, thingspeak_client)
+    #creating an instance of the iot_dj class
+    IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
-    #response = spotify_client.play_album('spotify:album:2iXwKeYYKuXjalgAXtx9sd')
-    #return jsonify(response.json() if response.status_code == 200 else {"message": "Playback started successfully."})
-
-"""def record_music(spotify_client):
-    #writing songs to csv file
-    last_update_time = datetime.now().timestamp()
-    last_response = None
-    counter = 0
-    update_interval = 60
-
-    fields = ['date', 'time', 'song_name', 'song_id', 'song_duration', 'progress_through_song']
-    filename = "Songs_I_Played.csv"
-
-    with open(filename, 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fields)
-        writer.writeheader()
-
-        while True:
-            current_time = datetime.now().timestamp()
-            if current_time - last_update_time >= update_interval or counter == 0:
-                response = spotify_client.get_current_track()
-                print(response)
-                if response != None and (counter == 0 or response['song_id'] != last_response['song_id']):
-                    print("yes")
-                    row = response
-                    writer.writerow(row)
-                    csvfile.flush()
-                    print("successful write")
-                    last_response = response
-                    #time.sleep(update_interval)
-
-                last_update_time = current_time
-                #update_interval = 60
-                counter += 1"""
-
-def record_music(spotify_client, thingspeak_client):
-    last_update_time = datetime.now().timestamp()
-    last_track = None
-    counter = 0
-    update_interval = 60
-
-    #print(spotify_client.top_songs())
-
-    while True:
-        current_time = datetime.now().timestamp()
-        
-        if current_time - last_update_time >= update_interval or counter == 0:
-            current_track = spotify_client.get_current_track()
-            print(current_track)
-            if current_track != None:
-                track_features = spotify_client.get_track_features(current_track)
-                print(track_features)
-            if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
-                print(f"Current Track: {current_track.get('song_name')}")
-                thingspeak_client.update_channel(track_features)
-
-                last_track = current_track
-                #time.sleep(update_interval)
-
-            last_update_time = current_time
-            #update_interval = 60
-            counter += 1
-
-def play_music(spotify_client, thingspeak_client):
-    # recommendation = spotify_client.create_recommendation(current_track['song_id'])
-    # print(f"Song recommendation: {recommendation['song_name']}")
-    waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
-    response = spotify_client.queue_song(waxwing)
-    print(response)
+    IOT_DJ.record_music()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
