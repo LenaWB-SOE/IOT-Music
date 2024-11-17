@@ -116,7 +116,7 @@ while True:
         buffer += raw_data  # Append new data to the buffer
         print(f"Buffer: {buffer}")
 
-        if "\r\n" in buffer:
+        if b"\r\n" in buffer:
             print("Parsing")
             # Parse the buffer
             parsed_data, remaining_buffer = parse_sensor_data(buffer)
