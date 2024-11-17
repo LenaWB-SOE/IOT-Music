@@ -156,6 +156,7 @@ class iot_dj:
                 }
                 self.thingspeak_client.update_environment_channel(environment_dict)
                 data = []
+                last_update_time = current_time
 
 def main():
     #creating an instance of the SpotifyClient class
