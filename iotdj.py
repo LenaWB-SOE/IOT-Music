@@ -122,7 +122,6 @@ class iot_dj:
         # Initialize an empty buffer
         buffer = b""
         last_update_time = datetime.now().timestamp()
-        counter = 0
         update_interval = 60
         data = []
 
@@ -147,7 +146,7 @@ class iot_dj:
                         if isinstance(parsed_data[0], int):
                             data.append(parsed_data[0])
 
-            if current_time - last_update_time >= update_interval or counter == 0:
+            if current_time - last_update_time >= update_interval:
                 average = st.mean(data)
                 environment_dict = {
                     'Light': 44,
