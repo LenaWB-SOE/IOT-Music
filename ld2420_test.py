@@ -32,6 +32,7 @@ def parse_sensor_data(buffer):
     
     # Split by the delimiter (\r\n)
     packets = ascii_data.split("\r\n")
+    print(f"Packets: {packets}")
     results = []
 
     for i, packet in enumerate(packets):
