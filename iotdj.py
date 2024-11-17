@@ -122,7 +122,7 @@ class iot_dj:
         # Initialize an empty buffer
         buffer = b""
         last_update_time = datetime.now().timestamp()
-        update_interval = 20
+        update_interval = 5
         data = []
 
         while True:
