@@ -86,14 +86,7 @@ def parse_sensor_data(buffer):
     results = []
 
     for i, packet in enumerate(packets):
-        if "ON" in packet and "Range" in packet:
-            try:
-                # Extract the measurement value
-                value = int(packet.split("Range")[1].strip())
-                results.append(value)
-            except ValueError:
-                continue  # Ignore invalid data
-        elif "Range" in packet:
+        if "Range" in packet:
             try:
                 # Extract the measurement value
                 value = int(packet.split("Range")[1].strip())
@@ -104,7 +97,7 @@ def parse_sensor_data(buffer):
             results.append("ON")
         elif "OFF" in packet:
             results.append("OFF")
-    return results, packets[-1]  # Return results and the last partial packet
+    return results  # Return results and the last partial packet
 
 # Initialize an empty buffer
 buffer = b""
@@ -119,10 +112,9 @@ while True:
         if b"\r\n" in buffer:
             print("Parsing")
             # Parse the buffer
-            parsed_data, remaining_buffer = parse_sensor_data(buffer)
-            print(f"Remaining buffer: {remaining_buffer}")
-            # Retain the remaining partial packet for the next loop
-            buffer = remaining_buffer.encode('utf-8', errors='ignore')
+            parsed_data= parse_sensor_data(buffer)
+            # Reset buffer
+            buffer = b""
 
             # Process valid parsed data
             if parsed_data:
