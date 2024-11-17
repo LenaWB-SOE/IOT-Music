@@ -120,6 +120,7 @@ while True:
             print("Parsing")
             # Parse the buffer
             parsed_data, remaining_buffer = parse_sensor_data(buffer)
+            print(f"Remaining buffer: {remaining_buffer}")
             # Retain the remaining partial packet for the next loop
             buffer = remaining_buffer.encode('utf-8', errors='ignore')
 
