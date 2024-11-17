@@ -123,9 +123,9 @@ while True:
             # Retain the remaining partial packet for the next loop
             buffer = remaining_buffer.encode('utf-8', errors='ignore')
 
-        # Process valid parsed data
-        if parsed_data:
-            print("Parsed Values:", parsed_data)
+            # Process valid parsed data
+            if parsed_data:
+                print("Parsed Values:", parsed_data)
 
         
 
