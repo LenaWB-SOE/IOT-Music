@@ -143,8 +143,9 @@ class iot_dj:
                     # Process valid parsed data
                     if parsed_data:
                         print("Parsed Values:", parsed_data)
-                        if isinstance(parsed_data[0], int):
-                            data.append(parsed_data[0])
+                        if isinstance(parsed_data[0], str) == False:
+                            print("appended")
+                            data.append(int(parsed_data[0]))
 
             if current_time - last_update_time >= update_interval:
                 average = st.mean(data)
