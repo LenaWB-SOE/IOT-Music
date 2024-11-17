@@ -148,6 +148,7 @@ class iot_dj:
 
             if current_time - last_update_time >= update_interval:
                 average = st.mean(data)
+                print(f"-----------------------AVERAGE: {average}")
                 environment_dict = {
                     'Light': 44,
                     'Radar': average
