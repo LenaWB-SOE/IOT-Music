@@ -155,15 +155,16 @@ class iot_dj:
                             data.append(int(parsed_data[0]))
 
             if current_time - last_update_time >= update_interval:
-                average = st.mean(data)
-                print(f"-----------------------AVERAGE: {average}")
-                environment_dict = {
-                    'Light': 44,
-                    'Radar': average
-                }
-                self.thingspeak_client.update_environment_channel(environment_dict)
-                data = []
-                last_update_time = current_time
+                if data:
+                    average = st.mean(data)
+                    print(f"-----------------------AVERAGE: {average}")
+                    environment_dict = {
+                        'Light': 44,
+                        'Radar': average
+                    }
+                    self.thingspeak_client.update_environment_channel(environment_dict)
+                    data = []
+                    last_update_time = current_time
 
 def main():
     #creating an instance of the SpotifyClient class
