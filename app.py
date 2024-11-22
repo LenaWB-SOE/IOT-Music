@@ -98,7 +98,7 @@ def run_application():
     #creating an instance of the iot_dj class
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
-    IOT_DJ.radar_readings()
+    IOT_DJ.start_recording()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

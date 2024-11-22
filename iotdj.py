@@ -9,6 +9,7 @@ import urllib.parse
 import csv
 import serial
 import statistics as st
+import threading
 
 class iot_dj:
     def __init__(self, spotify_client, thingspeak_client):
@@ -17,6 +18,12 @@ class iot_dj:
         self.spotify_client = spotify_client
         self.thingspeak_client = thingspeak_client
         self.in_error_mode = False
+
+    def start_recording(self):
+        self.music_recording_thread = threading.Thread(target=self.record_music) 
+        self.movement_recording_thread = threading.Thread(target=self.radar_readings)
+        self.music_recording_thread.start()
+        self.movement_recording_thread.start()
 
     def record_music(self):
         last_update_time = datetime.now().timestamp()
