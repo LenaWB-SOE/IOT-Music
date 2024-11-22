@@ -100,5 +100,11 @@ def run_application():
 
     IOT_DJ.start_recording()
 
+    return redirect('/data-visualisation')
+
+@app.route('/data-visualisation')
+def data_visualisation():
+    return "Data being recorded on <a href='https://thingspeak.mathworks.com/channels/2735338/private_show'>ThingSpeak</a>"
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
