@@ -22,16 +22,16 @@
 # except KeyboardInterrupt:
 #     GPIO.cleanup()
 
-# from gpiozero import MCP3008
-# import time
-
-# pot = MCP3008(0)
-
-# while True:
-#     print(pot.value)
-#     time.sleep(0.5)
-
+from gpiozero import MCP3008
 import time
+
+pot = MCP3008(0)
+
+while True:
+    print(pot.value)
+    time.sleep(0.5)
+
+"""import time
 import board
 import busio
 from digitalio import DigitalInOut
@@ -63,5 +63,5 @@ try:
         print(f"Raw Value: {raw_value}, Voltage: {voltage:.2f} V")
         time.sleep(1)
 except KeyboardInterrupt:
-    print("Exiting program.")
+    print("Exiting program.")"""
 
