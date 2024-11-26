@@ -44,7 +44,7 @@ cs = DigitalInOut(board.D5)  # Chip select pin (GPIO8 in Wiring)
 mcp = MCP3008(spi, cs)
 
 # Connect LDR to channel 0 (CH0)
-ldr = AnalogIn(mcp, MCP3008.P0)
+ldr = AnalogIn(mcp, 0)
 
 print("Reading LDR values...")
 try:
