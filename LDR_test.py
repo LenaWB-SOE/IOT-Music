@@ -22,11 +22,39 @@
 # except KeyboardInterrupt:
 #     GPIO.cleanup()
 
-from gpiozero import MCP3008
+# from gpiozero import MCP3008
+# import time
+
+# pot = MCP3008(0)
+
+# while True:
+#     print(pot.value)
+#     time.sleep(0.5)
+
 import time
+import board
+import busio
+from digitalio import DigitalInOut
+from adafruit_mcp3xxx.mcp3008 import MCP3008
+from adafruit_mcp3xxx.analog_in import AnalogIn
 
-pot = MCP3008(0)
+# Set up SPI and MCP3008
+spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
+cs = DigitalInOut(board.D5)  # Chip select pin (GPIO8 in Wiring)
+mcp = MCP3008(spi, cs)
 
-while True:
-    print(pot.value)
-    time.sleep(0.5)
+# Connect LDR to channel 0 (CH0)
+ldr = AnalogIn(mcp, MCP3008.P0)
+
+print("Reading LDR values...")
+try:
+    while True:
+        # Read the raw value and voltage
+        raw_value = ldr.value  # 0-65535
+        voltage = ldr.voltage  # Voltage corresponding to the raw value
+
+        print(f"Raw Value: {raw_value}, Voltage: {voltage:.2f} V")
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Exiting program.")
+
