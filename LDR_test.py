@@ -37,6 +37,7 @@ import busio
 from digitalio import DigitalInOut
 from adafruit_mcp3xxx.mcp3008 import MCP3008
 from adafruit_mcp3xxx.analog_in import AnalogIn
+from gpiozero import MCP3008
 
 # Set up SPI and MCP3008
 spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
@@ -44,9 +45,12 @@ cs = DigitalInOut(board.D5)  # Chip select pin (GPIO8 in Wiring)
 mcp = MCP3008(spi, cs)
 
 # Connect LDR to channel 0 (CH0)
-ldr = AnalogIn(mcp, MCP3008.P0)
-value = ldr.read_adc(0)
-print(value)
+#ldr = AnalogIn(mcp, MCP3008.P0)
+adc = MCP3008(channel=0, device=0)
+print(str(adc.value*3.3))
+# ldr = AnalogIn(mcp, 0)
+# value = ldr.read_adc(0)
+# print(value)
 
 print("Reading LDR values...")
 try:
