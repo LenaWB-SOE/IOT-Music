@@ -35,14 +35,16 @@ while True:
 import board
 import busio
 from digitalio import DigitalInOut
+from analogio import AnalogIn
 from adafruit_mcp3xxx.mcp3008 import MCP3008, P0
 from adafruit_mcp3xxx.analog_in import AnalogIn
 #from gpiozero import MCP3008
 
 # Set up SPI and MCP3008
 spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
-cs = DigitalInOut(board.D5)  # Chip select pin (GPIO8 in Wiring)
-mcp = MCP3008(spi, cs)
+#cs = DigitalInOut(board.D5)  # Chip select pin (GPIO8 in Wiring)
+analog_in = AnalogIn(board.D5)
+#mcp = MCP3008(spi, cs)
 
 # Connect LDR to channel 0 (CH0)
 ldr = AnalogIn(mcp, P0)
