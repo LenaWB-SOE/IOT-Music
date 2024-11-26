@@ -47,7 +47,7 @@ cs = DigitalInOut(board.D5)  # Chip select pin (GPIO8 in Wiring)
 # Connect LDR to channel 0 (CH0)
 #ldr = AnalogIn(mcp, MCP3008.P0)
 adc = MCP3008(channel=0, device=0)
-print(str(adc.value*3.3))
+
 # ldr = AnalogIn(mcp, 0)
 # value = ldr.read_adc(0)
 # print(value)
@@ -56,10 +56,11 @@ print("Reading LDR values...")
 try:
     while True:
         # Read the raw value and voltage
-        raw_value = ldr.value  # 0-65535
-        voltage = ldr.voltage  # Voltage corresponding to the raw value
+        print(str(adc.value*3.3))
+        # raw_value = ldr.value  # 0-65535
+        # voltage = ldr.voltage  # Voltage corresponding to the raw value
 
-        print(f"Raw Value: {raw_value}, Voltage: {voltage:.2f} V")
+        # print(f"Raw Value: {raw_value}, Voltage: {voltage:.2f} V")
         time.sleep(1)
 except KeyboardInterrupt:
     print("Exiting program.")
