@@ -37,7 +37,7 @@ import busio
 from digitalio import DigitalInOut
 from adafruit_mcp3xxx.mcp3008 import MCP3008
 from adafruit_mcp3xxx.analog_in import AnalogIn
-from gpiozero import MCP3008
+#from gpiozero import MCP3008
 
 # Set up SPI and MCP3008
 spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
