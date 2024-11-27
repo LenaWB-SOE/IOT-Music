@@ -123,65 +123,14 @@ class iot_dj:
                 results.append("OFF")
         return results, packets[-1]  # Return results and the last partial packet
     
-    def movement_readings(self):
-        # Configure the serial port
-        ser = serial.Serial(
-            port='/dev/serial0',  # UART port on Raspberry Pi
-            baudrate=115200,      # LD2420 default baud rate
-            timeout=1             # 1 second timeout for reading
-        )
-
-        print("LD2420 Test: Listening for data...")
-
-        # Initialize an empty buffer
-        buffer = b""
-        last_update_time = datetime.now().timestamp()
-        update_interval = 5
-        data = []
-
-        while True:
-            current_time = datetime.now().timestamp()
-            # Read available data from the serial port
-            raw_data = ser.read(ser.in_waiting or 1)
-            if raw_data:
-                buffer += raw_data  # Append new data to the buffer
-                #print(f"Buffer: {buffer}")
-
-                if b"\r\n" in buffer:
-                    #print("Parsing")
-                    # Parse the buffer
-                    parsed_data, remaining_buffer = self.parse_sensor_data(buffer)
-                    # Retain the remaining partial packet for the next loop
-                    buffer = remaining_buffer.encode('utf-8', errors='ignore')
-
-                    # Process valid parsed data
-                    if parsed_data:
-                        print("Parsed Values:", parsed_data)
-                        if isinstance(parsed_data[0], str) == False:
-                            print("appended")
-                            data.append(int(parsed_data[0]))
-
-            if current_time - last_update_time >= update_interval:
-                if data:
-                    average = st.mean(data)
-                    print(f"-----------------------AVERAGE: {average}")
-                    environment_dict = {
-                        'Light': 44,
-                        'Radar': average
-                    }
-                    self.thingspeak_client.update_environment_channel(environment_dict)
-                    data = []
-                    last_update_time = current_time
 
     def radar_readings(self, serial, data, buffer):
         # Read available data from the serial port
         raw_data = serial.read(serial.in_waiting or 1)
         if raw_data:
             buffer += raw_data  # Append new data to the buffer
-            #print(f"Buffer: {buffer}")
 
             if b"\r\n" in buffer:
-                #print("Parsing")
                 # Parse the buffer
                 parsed_data, remaining_buffer = self.parse_sensor_data(buffer)
                 # Retain the remaining partial packet for the next loop
@@ -189,34 +138,10 @@ class iot_dj:
 
                 # Process valid parsed data
                 if parsed_data:
-                    print("Parsed Values:", parsed_data)
                     if isinstance(parsed_data[0], str) == False:
-                        print("appended")
                         data.append(int(parsed_data[0]))
 
         return data
-
-    def light_readings(self):
-        # create the spi bus
-        spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
-
-        # create the cs (chip select)
-        # cs = digitalio.DigitalInOut(board.D22)
-        cs = digitalio.DigitalInOut(board.D24)
-
-        # create the mcp object
-        mcp = MCP.MCP3008(spi, cs)
-
-        # create an analog input channel on pin 0
-        chan0 = AnalogIn(mcp, MCP.P0)
-
-        RawValue = chan0.value
-        Voltage = chan0.voltage
-
-        print(f'Raw ADC Value: {RawValue}')
-        print(f'ADC Voltage: {Voltage}V')
-
-        return RawValue, Voltage
 
 
     def ambient_readings(self):
@@ -236,7 +161,7 @@ class iot_dj:
         # Initialize variables
         buffer = b""
         last_update_time = datetime.now().timestamp()
-        update_interval = 5
+        update_interval = 60
         data = []
 
         while True:
@@ -246,9 +171,6 @@ class iot_dj:
 
             LightRawValue = LDR.value
             LightVoltage = LDR.voltage
-
-            print(f'Raw ADC Value: {LightRawValue}')
-            print(f'ADC Voltage: {LightVoltage}V')
 
             if current_time - last_update_time >= update_interval:
                 if data:
@@ -265,6 +187,7 @@ class iot_dj:
 
 
 def main():
+    #This doesn't run
     #creating an instance of the SpotifyClient class
     spotify_client = SpotifyClient(
         access_token=session['access_token'],
