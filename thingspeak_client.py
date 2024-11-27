@@ -47,8 +47,9 @@ class ThingSpeakClient:
         payload = {
             'api_key': self.environ_write_api_key,
             'field1': weekday,
-            'field2': data_dict.get('Light'),
-            'field3': data_dict.get('Radar'),
+            'field2': data_dict.get('Light RAW'),
+            'field3': data_dict.get('Light VOLTAGE'),
+            'field4': data_dict.get('Radar'),
         }
         
         try:

@@ -12,3 +12,10 @@ hi = 1
 
 if isinstance(hi, int):
     print("Yes")
+
+def testfunc():
+    hi = 2+3
+    bye = 4+6
+    return hi, bye
+
+print(testfunc()[0])
