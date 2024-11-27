@@ -256,7 +256,7 @@ class iot_dj:
                     print(f"-----------------------AVERAGE: {average}")
                     environment_dict = {
                         'Light RAW': LightRawValue,
-                        'Light VOLTAGE': LightVoltage[1],
+                        'Light VOLTAGE': LightVoltage,
                         'Radar': average
                     }
                     self.thingspeak_client.update_environment_channel(environment_dict)
