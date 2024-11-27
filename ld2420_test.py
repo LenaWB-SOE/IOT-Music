@@ -1,4 +1,5 @@
 import serial
+import time
 
 # Configure the serial port
 ser = serial.Serial(
@@ -119,6 +120,8 @@ while True:
             # Process valid parsed data
             if parsed_data:
                 print("Parsed Values:", parsed_data)
+
+    time.sleep(1)
 
         
 """
