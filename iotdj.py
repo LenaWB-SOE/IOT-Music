@@ -220,16 +220,20 @@ class iot_dj:
 
 
     def ambient_readings(self):
-        # Configure the serial port
+        # Configure the serial port for Radar
         ser = serial.Serial(
             port='/dev/serial0',  # UART port on Raspberry Pi
             baudrate=115200,      # LD2420 default baud rate
             timeout=1             # 1 second timeout for reading
         )
 
-        print("LD2420 Test: Listening for data...")
+        # For reading LDR values via  ADC MCP3008
+        spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI) # create the spi bus
+        cs = digitalio.DigitalInOut(board.D24) # create the cs (chip select)
+        mcp = MCP.MCP3008(spi, cs) # create the mcp object
+        LDR = AnalogIn(mcp, MCP.P0) # create an analog input channel on pin 0
 
-        # Initialize an empty buffer
+        # Initialize variables
         buffer = b""
         last_update_time = datetime.now().timestamp()
         update_interval = 5
@@ -239,15 +243,20 @@ class iot_dj:
             current_time = datetime.now().timestamp()
 
             data = self.radar_readings(ser, data, buffer)
-            light_reading = self.light_readings()
+
+            LightRawValue = LDR.value
+            LightVoltage = LDR.voltage
+
+            print(f'Raw ADC Value: {LightRawValue}')
+            print(f'ADC Voltage: {LightVoltage}V')
 
             if current_time - last_update_time >= update_interval:
                 if data:
                     average = st.mean(data)
                     print(f"-----------------------AVERAGE: {average}")
                     environment_dict = {
-                        'Light RAW': light_reading[0],
-                        'Light VOLTAGE': light_reading[1],
+                        'Light RAW': LightRawValue,
+                        'Light VOLTAGE': LightVoltage[1],
                         'Radar': average
                     }
                     self.thingspeak_client.update_environment_channel(environment_dict)
