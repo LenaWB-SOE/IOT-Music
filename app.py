@@ -100,7 +100,7 @@ def run_application():
 
     #spotify_client.play_song("spotify:track:3xMQOd1C3TXsjQ3pmzOmkC")
     #time.sleep(5)
-    spotify_client.set_volume()
+    spotify_client.set_volume(50)
     print("here")
 
     #IOT_DJ.start_recording()
