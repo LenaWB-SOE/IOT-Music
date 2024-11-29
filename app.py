@@ -99,11 +99,13 @@ def run_application():
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
     spotify_client.play_song("spotify:track:4gGh7b3nKa4rlxyPLWcfTd")
+    time.sleep(10)
+    spotify_client.play_album("spotify:album:5HRB9TeaIHRBxfIm4XZTj6")
     print("here")
 
     #IOT_DJ.start_recording()
-
-    return redirect('/data-visualisation')
+    return "done"
+    #return redirect('/data-visualisation')
 
 @app.route('/data-visualisation')
 def data_visualisation():
