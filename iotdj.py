@@ -93,13 +93,6 @@ class iot_dj:
                     #update_interval = 60
                     counter += 1"""
 
-    def play_music(self):
-        # recommendation = spotify_client.create_recommendation(current_track['song_id'])
-        # print(f"Song recommendation: {recommendation['song_name']}")
-        waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
-        response = self.spotify_client.queue_song(waxwing)
-        print(response)
-
     def parse_sensor_data(self, buffer):
         # Convert buffer to ASCII
         ascii_data = buffer.decode('utf-8', errors='ignore')
@@ -184,6 +177,16 @@ class iot_dj:
                     self.thingspeak_client.update_environment_channel(environment_dict)
                     data = []
                     last_update_time = current_time
+
+    def queue_song(self):
+        # recommendation = spotify_client.create_recommendation(current_track['song_id'])
+        # print(f"Song recommendation: {recommendation['song_name']}")
+        waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
+        response = self.spotify_client.queue_song(waxwing)
+        print(response)
+
+    def fade_in_song(self, song_id):
+        return None
 
 
 def main():
