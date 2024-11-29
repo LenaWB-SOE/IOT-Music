@@ -99,6 +99,7 @@ def run_application():
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
     spotify_client.play_song("spotify:track:4gGh7b3nKa4rlxyPLWcfTd")
+    print("here")
 
     #IOT_DJ.start_recording()
 

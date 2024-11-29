@@ -32,10 +32,6 @@ class SpotifyClient:
             self.refresh_token_func()
         return {'Authorization': f"Bearer {self.access_token}"}
 
-    def play_album(self, album_uri):
-        response = requests.put(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'context_uri': album_uri})
-        return response
-
     def get_current_track(self):
         response = requests.get(f"{API_BASE_URL}me/player/currently-playing", headers=self.get_headers())
         if response.status_code == 200:
@@ -76,8 +72,13 @@ class SpotifyClient:
             print("Song queued")
         return response
     
+    def play_album(self, album_uri):
+        response = requests.put(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'context_uri': album_uri})
+        return response
+    
     def play_song(self, song_uri):
         response = requests.post(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'context_uri': song_uri})
+        print(response)
         if response.status_code == 200:
             print("Song playing")
         else:
