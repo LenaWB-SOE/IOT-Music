@@ -74,13 +74,24 @@ class SpotifyClient:
     
     def play_album(self, album_uri):
         response = requests.put(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'context_uri': album_uri})
+        if response.status_code == 204:
+            print("Album/playlist playing")
+        else:
+            print(f"Error {response.status_code}: {response.text}")
         return response
     
     def play_song(self, song_uri):
         response = requests.put(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'uris': [song_uri]})
-        print(response)
-        if response.status_code == 200:
+        if response.status_code == 204:
             print("Song playing")
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+        return response
+    
+    def set_volume(self):
+        response = requests.put(f"{API_BASE_URL}me/player/volume", headers=self.get_headers(), json={'volume_percent': 50})
+        if response.status_code == 204:
+            print("volume set")
         else:
             print(f"Error {response.status_code}: {response.text}")
         return response

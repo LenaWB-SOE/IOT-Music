@@ -98,9 +98,9 @@ def run_application():
     #creating an instance of the iot_dj class
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
-    spotify_client.play_song("spotify:track:3xMQOd1C3TXsjQ3pmzOmkC")
-    time.sleep(10)
-    spotify_client.play_album("spotify:album:5HRB9TeaIHRBxfIm4XZTj6")
+    #spotify_client.play_song("spotify:track:3xMQOd1C3TXsjQ3pmzOmkC")
+    #time.sleep(5)
+    spotify_client.set_volume()
     print("here")
 
     #IOT_DJ.start_recording()
