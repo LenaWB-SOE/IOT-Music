@@ -103,8 +103,7 @@ def run_application():
 
     #IOT_DJ.start_recording()
 
-    #return redirect('/data-visualisation')
-    return None
+    return redirect('/data-visualisation')
 
 @app.route('/data-visualisation')
 def data_visualisation():
