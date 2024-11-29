@@ -88,8 +88,8 @@ class SpotifyClient:
             print(f"Error {response.status_code}: {response.text}")
         return response
     
-    def set_volume(self):
-        response = requests.put(f"{API_BASE_URL}me/player/volume", headers=self.get_headers(), json={'volume_percent': 50})
+    def set_volume(self, volume):
+        response = requests.put(f"{API_BASE_URL}me/player/volume?volume_percent={volume}", headers=self.get_headers())
         if response.status_code == 204:
             print("volume set")
         else:
