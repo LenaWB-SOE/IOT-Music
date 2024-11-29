@@ -77,7 +77,7 @@ class SpotifyClient:
         return response
     
     def play_song(self, song_uri):
-        response = requests.put(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'context_uri': song_uri})
+        response = requests.put(f"{API_BASE_URL}me/player/play", headers=self.get_headers(), json={'uris': [song_uri]})
         print(response)
         if response.status_code == 200:
             print("Song playing")

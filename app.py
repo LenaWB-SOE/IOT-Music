@@ -100,9 +100,8 @@ def run_application():
 
     spotify_client.play_song("spotify:track:3xMQOd1C3TXsjQ3pmzOmkC")
     time.sleep(10)
-    spotify_client.play_album("spotify:track:3xMQOd1C3TXsjQ3pmzOmkC")
+    spotify_client.play_album("spotify:album:5HRB9TeaIHRBxfIm4XZTj6")
     print("here")
-    #"spotify:album:5HRB9TeaIHRBxfIm4XZTj6"
 
     #IOT_DJ.start_recording()
     return "done"
