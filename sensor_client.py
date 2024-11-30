@@ -71,6 +71,7 @@ class SensorClient:
                 if parsed_data:
                     if isinstance(parsed_data[0], str) == False:
                         data_list.append(int(parsed_data[0]))
+        print(parsed_data)
 
         return data_list
     
@@ -105,7 +106,6 @@ def ambient_readings(sensor_client):
         sensor_client.radar_readings_append(radar_data)
         sensor_client.light_raw_append(light_raw_data)
         sensor_client.light_voltage_append(light_volt_data)
-        print(radar_data)
 
         if current_time - last_update_time >= update_interval:
             if radar_data and light_raw_data and light_volt_data:
