@@ -57,7 +57,7 @@ class SensorClient:
 
     def radar_readings_append(self, data_list):
         # Read available data from the serial port
-        raw_data = serial.read(serial.in_waiting or 1)
+        raw_data = self.RadarSerial.read(self.RadarSerial.in_waiting or 1)
         if raw_data:
             self.buffer += raw_data  # Append new data to the buffer
 
