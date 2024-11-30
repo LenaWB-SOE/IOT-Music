@@ -60,7 +60,7 @@ class ThingSpeakClient:
             response = requests.post(self.base_url, data=payload)
             if response.status_code == 200:
                 print("Data successfully updated to ThingSpeak!")
-                print(f"Response Content: {response.text}")
+                #print(f"Response Content: {response.text}")
             else:
                 print(f"Failed to update data. Status code: {response.status_code}")
                 print(response.text)
