@@ -99,7 +99,8 @@ def run_application():
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
     #IOT_DJ.start_recording()
-    IOT_DJ.record_music()
+    #IOT_DJ.record_music()
+    IOT_DJ.
 
     return redirect('/data-visualisation')
 

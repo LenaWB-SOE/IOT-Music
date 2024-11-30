@@ -144,7 +144,7 @@ class iot_dj:
         response = self.spotify_client.queue_song(waxwing)
         print(response)
 
-    def fade_in_song(self, song_id):
+    def fade_in_song(self, song_uri):
         return None
 
 
