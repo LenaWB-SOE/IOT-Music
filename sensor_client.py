@@ -71,7 +71,7 @@ class SensorClient:
                 if parsed_data:
                     if isinstance(parsed_data[0], str) == False:
                         data_list.append(int(parsed_data[0]))
-                        print(parsed_data)
+                        #print(parsed_data)
         
 
         return data_list
@@ -102,7 +102,7 @@ def main():
 
         # Initialize variables
         last_update_time = datetime.now().timestamp()
-        update_interval = 30
+        update_interval = 20
         radar_data = []
         #light_raw_data = []
         #light_volt_data = []
@@ -132,8 +132,8 @@ def main():
                     #self.thingspeak_client.update_environment_channel(environment_dict)
                     print(environment_dict)
                     radar_data = []
-                    light_raw_data = []
-                    light_volt_data = []
+                    #light_raw_data = []
+                    #light_volt_data = []
                     last_update_time = current_time
 
     ambient_readings(sensor_client)
