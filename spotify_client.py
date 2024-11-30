@@ -73,7 +73,8 @@ class SpotifyClient:
     def get_random_song_from_playlist(self, playlist_uri):
         playlist_id = playlist_uri[17:]
         print(playlist_id)
-        response = requests.get(f"{API_BASE_URL}me/playlists/{playlist_id}/tracks", headers=self.get_headers(), json={'limit': 1, 'offset': 2})
+        offset = 2
+        response = requests.get(f"{API_BASE_URL}me/playlists/{playlist_id}/tracks?offset={offset}&limit=1", headers=self.get_headers())
         if response.status_code == 204:
             song = response.json()["items"][0]["track"]["uri"]
             print(song)
