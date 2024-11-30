@@ -76,12 +76,10 @@ class SpotifyClient:
         offset = 2
         limit = 2
         response = requests.get(f"{API_BASE_URL}playlists/{playlist_id}/tracks?offset={offset}&limit={limit}", headers=self.get_headers())
-        #response = requests.get(f"{API_BASE_URL}/playlists/{playlist_id}/tracks", headers=self.get_headers())
-        print(response)
-        if response.status_code == 204:
+        if response.status_code == 200:
             print(response.json())
-            #song = response.json()["items"][0]["track"]["uri"]
-            #print(song)
+            song = response.json()["items"][0]["track"]["uri"]
+            print(song)
         else:
             print(f"Error {response.status_code}: {response.text}")
         return response
