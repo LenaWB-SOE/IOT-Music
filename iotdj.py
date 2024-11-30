@@ -92,6 +92,7 @@ class iot_dj:
                 if parsed_data:
                     if isinstance(parsed_data[0], str) == False:
                         data.append(int(parsed_data[0]))
+                        print(parsed_data)
 
         return data
 
@@ -133,7 +134,8 @@ class iot_dj:
                         'Light VOLTAGE': LightVoltage,
                         'Radar': average
                     }
-                    self.thingspeak_client.update_environment_channel(environment_dict)
+                    #self.thingspeak_client.update_environment_channel(environment_dict)
+                    print(environment_dict)
                     data = []
                     last_update_time = current_time
 

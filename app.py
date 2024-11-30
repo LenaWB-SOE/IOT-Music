@@ -100,7 +100,7 @@ def run_application():
 
     #IOT_DJ.start_recording()
     #IOT_DJ.record_music()
-    IOT_DJ.
+    IOT_DJ.ambient_readings()
 
     return redirect('/data-visualisation')
 
