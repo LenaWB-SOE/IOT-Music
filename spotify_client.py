@@ -37,7 +37,7 @@ class SpotifyClient:
         if response.status_code == 200:
             current_track = {
                 'song': response.json()["item"]["name"],
-                'song uri': response.json()["item"]["id"],
+                'song uri': response.json()["item"]["uri"],
                 'artist': response.json()["item"]["artists"][0]["name"],
                 'artist uri': response.json()["item"]["artists"][0]["uri"],
                 'album': response.json()["item"]["album"]["name"],
@@ -46,26 +46,6 @@ class SpotifyClient:
             }
             return current_track
         return None
-    
-    def get_track_features(self, track):
-        # this is a deprecated feature
-        SONG_ID = track['song uri']
-        response = requests.get(f"{API_BASE_URL}audio-features/{SONG_ID}", headers=self.get_headers())
-        if response.status_code == 200:
-            song_features = {
-                'song': [track['song_name'], track['artist'], track['song_id']],
-                'acousticness': response.json()['acousticness'],
-                'danceability': response.json()['danceability'],
-                'energy': response.json()['energy'],
-                'instrumentalness': response.json()['instrumentalness'],
-                'loudness': response.json()['loudness'],
-                'tempo': response.json()['tempo'],
-                'valence': response.json()['valence']
-            }
-            return song_features
-        else:
-            print(f"Error {response.status_code}: {response.text}")
-            return None
     
     def queue_song(self, song_uri):
         response = requests.post(f"{API_BASE_URL}me/player/queue?uri={song_uri}", headers=self.get_headers())

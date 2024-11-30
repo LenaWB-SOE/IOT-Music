@@ -43,9 +43,8 @@ class iot_dj:
             
             if current_time - last_update_time >= update_interval or counter == 0:
                 current_track = self.spotify_client.get_current_track()
-                print(current_track)
                 if current_track != None and (counter == 0 or current_track['song uri'] != last_track['song uri']):
-                    print(f"Current Track: {current_track.get('song_name')}")
+                    print(f"Current Track: {current_track.get('song')}")
                     self.thingspeak_client.update_songs_played_channel(current_track)
 
                     last_track = current_track
