@@ -102,7 +102,7 @@ def main():
 
         # Initialize variables
         last_update_time = datetime.now().timestamp()
-        update_interval = 60
+        update_interval = 30
         radar_data = []
         #light_raw_data = []
         #light_volt_data = []
@@ -116,7 +116,7 @@ def main():
             #sensor_client.light_voltage_append(light_volt_data)
 
             if current_time - last_update_time >= update_interval:
-                if radar_data and light_raw_data and light_volt_data:
+                if radar_data:
                     radar_avg = st.mean(radar_data)
                     radar_stdev = st.stdev(radar_data)
                     #lightraw_avg = st.mean(light_raw_data)
