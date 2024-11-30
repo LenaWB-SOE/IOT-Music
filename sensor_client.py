@@ -118,6 +118,7 @@ def main():
             if current_time - last_update_time >= update_interval:
                 if radar_data and light_raw_data and light_volt_data:
                     radar_avg = st.mean(radar_data)
+                    radar_stdev = st.stdev(radar_data)
                     #lightraw_avg = st.mean(light_raw_data)
                     #lightvolt_avg = st.mean(light_volt_data)
                     light = sensor_client.light_readings()
@@ -125,7 +126,8 @@ def main():
                     environment_dict = {
                         'Light RAW': light[0],
                         'Light VOLTAGE': light[1],
-                        'Radar': radar_avg
+                        'Radar Mean': radar_avg,
+                        'Radar StDev': radar_stdev
                     }
                     #self.thingspeak_client.update_environment_channel(environment_dict)
                     print(environment_dict)
