@@ -70,7 +70,19 @@ class SpotifyClient:
             print(f"Error {response.status_code}: {response.text}")
         return response
     
+    def get_random_song_from_playlist(self, playlist_uri):
+        playlist_id = playlist_uri[17:]
+        print(playlist_id)
+        response = requests.get(f"{API_BASE_URL}me/playlists/{playlist_id}/tracks", headers=self.get_headers(), json={'limit': 1, 'offset': 2})
+        if response.status_code == 204:
+            song = response.json()["items"][0]["track"]["uri"]
+            print(song)
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+        return response
+    
     def set_volume(self, volume):
+        # spotify does not have permission to change device volume
         response = requests.put(f"{API_BASE_URL}me/player/volume?volume_percent={volume}", headers=self.get_headers())
         if response.status_code == 204:
             print("volume set")

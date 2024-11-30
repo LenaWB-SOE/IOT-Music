@@ -19,6 +19,14 @@ class iot_dj:
         self.spotify_client = spotify_client
         self.thingspeak_client = thingspeak_client
         self.sensor_client = sensor_client
+        self.state_playlists = {
+            "Dance": "spotify:playlist:1YNBItC3Z8fvWslhJHYFuG",
+            "Party background": "spotify:playlist:4TEZDSeweLF2mxg7gmOvaX",
+            "Wake up": "spotify:playlist:07US4Vsv0ycWb0hTk0PLrs",
+            "Going to sleep": "spotify:playlist:6ZEVixHqMVi9rHtSYP3tfQ", 
+            "Evening work": "spotify:playlist:2yffgYM7klV3HkpZMRKPO7", 
+            "Morning work": "spotify:playlist:7MqlcNyUCdMhDhWZYhtMYA" 
+        }
 
     def start_recording(self):
         self.music_recording_thread = threading.Thread(target=self.record_music) 
@@ -74,6 +82,10 @@ class iot_dj:
                     radar_data = []
 
                     last_update_time = current_time
+
+    def select_and_queue_song(self, state):
+        pass
+
 
     def queue_song(self):
         # recommendation = spotify_client.create_recommendation(current_track['song_id'])
