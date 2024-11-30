@@ -98,45 +98,42 @@ class SensorClient:
 
 def main():
     sensor_client = SensorClient()
-    def ambient_readings(sensor_client):
 
-        # Initialize variables
-        last_update_time = datetime.now().timestamp()
-        update_interval = 20
-        radar_data = []
-        #light_raw_data = []
-        #light_volt_data = []
+    # Initialize variables
+    last_update_time = datetime.now().timestamp()
+    update_interval = 20
+    radar_data = []
+    #light_raw_data = []
+    #light_volt_data = []
 
 
-        while True:
-            current_time = datetime.now().timestamp()
+    while True:
+        current_time = datetime.now().timestamp()
 
-            sensor_client.radar_readings_append(radar_data)
-            #sensor_client.light_raw_append(light_raw_data)
-            #sensor_client.light_voltage_append(light_volt_data)
+        sensor_client.radar_readings_append(radar_data)
+        #sensor_client.light_raw_append(light_raw_data)
+        #sensor_client.light_voltage_append(light_volt_data)
 
-            if current_time - last_update_time >= update_interval:
-                if radar_data:
-                    radar_avg = st.mean(radar_data)
-                    radar_stdev = st.stdev(radar_data)
-                    #lightraw_avg = st.mean(light_raw_data)
-                    #lightvolt_avg = st.mean(light_volt_data)
-                    light = sensor_client.light_readings()
+        if current_time - last_update_time >= update_interval:
+            if radar_data:
+                radar_avg = st.mean(radar_data)
+                radar_stdev = st.stdev(radar_data)
+                #lightraw_avg = st.mean(light_raw_data)
+                #lightvolt_avg = st.mean(light_volt_data)
+                light = sensor_client.light_readings()
 
-                    environment_dict = {
-                        'Light RAW': light[0],
-                        'Light VOLTAGE': light[1],
-                        'Radar Mean': radar_avg,
-                        'Radar StDev': radar_stdev
-                    }
-                    #self.thingspeak_client.update_environment_channel(environment_dict)
-                    print(environment_dict)
-                    radar_data = []
-                    #light_raw_data = []
-                    #light_volt_data = []
-                    last_update_time = current_time
-
-    ambient_readings(sensor_client)
+                environment_dict = {
+                    'Light RAW': light[0],
+                    'Light VOLTAGE': light[1],
+                    'Radar Mean': radar_avg,
+                    'Radar StDev': radar_stdev
+                }
+                #self.thingspeak_client.update_environment_channel(environment_dict)
+                print(environment_dict)
+                radar_data = []
+                #light_raw_data = []
+                #light_volt_data = []
+                last_update_time = current_time
 
 if __name__ == "__main__":
     main()
