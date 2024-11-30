@@ -38,20 +38,60 @@ class iot_dj:
         counter = 0
         update_interval = 60
 
+        fields = ['date', 'time', 'song_name', 'song_id', 'song_duration', 'progress_through_song', 'acousticness', 'danceability', 'energy', 'instrumentalness', 'loudness', 'tempo', 'valence']
+        filename = "Songs_I_Played.csv"
+
         while True:
             current_time = datetime.now().timestamp()
             
             if current_time - last_update_time >= update_interval or counter == 0:
                 current_track = self.spotify_client.get_current_track()
                 print(current_track)
-                if current_track != None and (counter == 0 or current_track['song uri'] != last_track['song uri']):
+                if current_track != None:
+                    track_features = self.spotify_client.get_track_features(current_track)
+                    print(track_features)
+                if current_track != None and (counter == 0 or current_track['song_id'] != last_track['song_id']):
                     print(f"Current Track: {current_track.get('song_name')}")
-                    self.thingspeak_client.update_songs_played_channel(current_track)
+                    self.thingspeak_client.update_music_channel(track_features)
 
                     last_track = current_track
+                    #time.sleep(update_interval)
 
                 last_update_time = current_time
+                #update_interval = 60
                 counter += 1
+
+    """def record_music(spotify_client):
+        #writing songs to csv file
+        last_update_time = datetime.now().timestamp()
+        last_response = None
+        counter = 0
+        update_interval = 60
+
+        fields = ['date', 'time', 'song_name', 'song_id', 'song_duration', 'progress_through_song']
+        filename = "Songs_I_Played.csv"
+
+        with open(filename, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fields)
+            writer.writeheader()
+
+            while True:
+                current_time = datetime.now().timestamp()
+                if current_time - last_update_time >= update_interval or counter == 0:
+                    response = spotify_client.get_current_track()
+                    print(response)
+                    if response != None and (counter == 0 or response['song_id'] != last_response['song_id']):
+                        print("yes")
+                        row = response
+                        writer.writerow(row)
+                        csvfile.flush()
+                        print("successful write")
+                        last_response = response
+                        #time.sleep(update_interval)
+
+                    last_update_time = current_time
+                    #update_interval = 60
+                    counter += 1"""
 
     def parse_sensor_data(self, buffer):
         # Convert buffer to ASCII

@@ -36,20 +36,20 @@ class SpotifyClient:
         response = requests.get(f"{API_BASE_URL}me/player/currently-playing", headers=self.get_headers())
         if response.status_code == 200:
             current_track = {
-                'song': response.json()["item"]["name"],
-                'song uri': response.json()["item"]["id"],
+                'date': datetime.now().strftime('%Y-%m-%d'),
+                'time': datetime.now().strftime('%H:%M'),
+                'song_name': response.json()["item"]["name"],
                 'artist': response.json()["item"]["artists"][0]["name"],
-                'artist uri': response.json()["item"]["artists"][0]["uri"],
-                'album': response.json()["item"]["album"]["name"],
-                'album uri': response.json()["item"]["album"]["uri"],
-                'context uri': response.json()["context"]["uri"]
+                'song_id': response.json()["item"]["id"],
+                'song_duration': response.json()["item"]["duration_ms"],
+                'progress_through_song': response.json()["progress_ms"]
             }
             return current_track
         return None
     
     def get_track_features(self, track):
         # this is a deprecated feature
-        SONG_ID = track['song uri']
+        SONG_ID = track['song_id']
         response = requests.get(f"{API_BASE_URL}audio-features/{SONG_ID}", headers=self.get_headers())
         if response.status_code == 200:
             song_features = {
@@ -97,6 +97,15 @@ class SpotifyClient:
         else:
             print(f"Error {response.status_code}: {response.text}")
         return response
+    
+    def create_recommendation(self, song_id): #doesn't work
+        response = requests.get(f"{API_BASE_URL}recommendations/", headers=self.get_headers(), json={'limit': 1,'seed_tracks': song_id}) #Not working
+        print(response.status_code)
+        recommended_song = {
+            'song_name': response.json()['tracks'][0]['name'],
+            'song_uri': response.json()['tracks'][0]['uri'],
+                            }
+        return recommended_song
     
     def top_songs(self):
         response = requests.get(f"{API_BASE_URL}me/top/{'tracks'}/", headers=self.get_headers(), json={'time_range': 'long_term', 'limit': 20})

@@ -2,12 +2,12 @@ import requests
 
 # track_name = "Cadillac"
 # artist_name = "Black Honey"
-# track_name = "Let It Be"
-# artist_name = "The Beatles"
+track_name = "Let It Be"
+artist_name = "The Beatles"
 # track_name = "Get It ON"
 # artist_name = "T.Rex"
-track_name = "Starman"
-artist_name = "David Bowie"
+# track_name = "Starman"
+# artist_name = "David Bowie"
 
 MBIDquery = f"https://musicbrainz.org/ws/2/recording/?query=track:{track_name} AND artist:{artist_name}&fmt=json"
 

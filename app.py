@@ -1,4 +1,4 @@
-from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_MUSIC_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
+from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
 from flask import Flask, redirect, request, jsonify, session
@@ -93,19 +93,15 @@ def run_application():
     )
 
     #creating an instance of the ThingSpeakClient class
-    thingspeak_client = ThingSpeakClient(TS_MUSIC_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
+    thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     #creating an instance of the iot_dj class
     IOT_DJ = iot_dj(spotify_client, thingspeak_client)
 
-    #spotify_client.play_song("spotify:track:3xMQOd1C3TXsjQ3pmzOmkC")
-    #time.sleep(5)
-    spotify_client.set_volume(50)
-    print("here")
-
     #IOT_DJ.start_recording()
-    return "done"
-    #return redirect('/data-visualisation')
+    IOT_DJ.record_music()
+
+    return redirect('/data-visualisation')
 
 @app.route('/data-visualisation')
 def data_visualisation():
