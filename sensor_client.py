@@ -71,7 +71,8 @@ class SensorClient:
                 if parsed_data:
                     if isinstance(parsed_data[0], str) == False:
                         data_list.append(int(parsed_data[0]))
-        print(parsed_data)
+                        print(parsed_data)
+        
 
         return data_list
     
