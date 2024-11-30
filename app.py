@@ -106,7 +106,7 @@ def run_application():
     #IOT_DJ.record_music()
     #IOT_DJ.ambient_readings()
     #spotify_client.play_album("spotify:playlist:37i9dQZF1EQpVaHRDcozEz")
-    spotify_client.get_random_song_from_playlist("spotify:playlist:37i9dQZF1EQpVaHRDcozEz")
+    spotify_client.get_random_song_from_playlist("spotify:playlist:1YNBItC3Z8fvWslhJHYFuG")
     #spotify:playlist:1YNBItC3Z8fvWslhJHYFuG
 
     return redirect('/data-visualisation')
