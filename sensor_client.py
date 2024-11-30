@@ -70,7 +70,7 @@ class SensorClient:
                 # Process valid parsed data
                 if parsed_data:
                     if isinstance(parsed_data[0], str) == False:
-                        self.radar_data.append(int(parsed_data[0]))
+                        data_list.append(int(parsed_data[0]))
 
         return data_list
     
