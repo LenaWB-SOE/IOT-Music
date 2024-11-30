@@ -77,12 +77,11 @@ class SpotifyClient:
         limit = 2
         response = requests.get(f"{API_BASE_URL}playlists/{playlist_id}/tracks?offset={offset}&limit={limit}", headers=self.get_headers())
         if response.status_code == 200:
-            print(response.json())
-            song = response.json()["items"][0]["track"]["uri"]
-            print(song)
+            song_uri = response.json()["items"][0]["track"]["uri"]
+            return song_uri
         else:
             print(f"Error {response.status_code}: {response.text}")
-        return response
+            return None
     
     def set_volume(self, volume):
         # spotify does not have permission to change device volume
