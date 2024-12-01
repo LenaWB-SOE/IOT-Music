@@ -96,7 +96,7 @@ class SensorClient:
 
 
 
-def main(csv_file_path="ambient_data.csv"):
+def main(label, csv_file_path="ambient_data.csv"):
     sensor_client = SensorClient()
 
     # Initialize variables
@@ -127,7 +127,6 @@ def main(csv_file_path="ambient_data.csv"):
         current_time = datetime.now().timestamp()
 
         sensor_client.radar_readings_append(radar_data)
-        print(radar_data)
         #sensor_client.light_raw_append(light_raw_data)
         #sensor_client.light_voltage_append(light_volt_data)
 
@@ -143,7 +142,8 @@ def main(csv_file_path="ambient_data.csv"):
                     'Light RAW': light[0],
                     'Light VOLTAGE': light[1],
                     'Radar Mean': radar_avg,
-                    'Radar StDev': radar_stdev
+                    'Radar StDev': radar_stdev,
+                    'Label': label
                 }
                 # Update ThingSpeak
                 #self.thingspeak_client.update_environment_channel(environment_dict)
@@ -161,5 +161,5 @@ def main(csv_file_path="ambient_data.csv"):
                 last_update_time = current_time
 
 if __name__ == "__main__":
-    main()
+    main("Dancing")
 
