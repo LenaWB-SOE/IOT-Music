@@ -138,7 +138,10 @@ def main(label, csv_file_path="ambient_data.csv"):
                 #lightvolt_avg = st.mean(light_volt_data)
                 light = sensor_client.light_readings()
 
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
                 environment_dict = {
+                    'Timestamp': timestamp,
                     'Light RAW': light[0],
                     'Light VOLTAGE': light[1],
                     'Radar Mean': radar_avg,
