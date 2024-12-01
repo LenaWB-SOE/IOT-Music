@@ -109,7 +109,7 @@ def run_application():
     #song_selection = spotify_client.get_random_song_from_playlist("spotify:playlist:1YNBItC3Z8fvWslhJHYFuG")
     #spotify_client.play_song(song_selection)
 
-    print(spotify_client.playback_state())
+    spotify_client.playback_state()
     #IOT_DJ.main()
 
 

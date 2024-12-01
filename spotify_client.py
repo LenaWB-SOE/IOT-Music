@@ -73,12 +73,19 @@ class SpotifyClient:
     
     def playback_state(self):
         response = requests.get(f"{API_BASE_URL}me/player", headers=self.get_headers())
-        playback_state = {
+        print(response.json())
+        if response.status_code == 200:
+            playback_state = {
             "is_playing": response.json()["is_playing"],
             "song_duration": response.json()["item"]["duration_ms"],
             "time_into_song": response.json()["progress_ms"]
-        }
-        return playback_state
+            }
+            print(playback_state)
+            return playback_state
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+            return None
+        
     
     def get_random_song_from_playlist(self, playlist_uri):
         playlist_id = playlist_uri[17:]
