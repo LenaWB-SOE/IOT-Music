@@ -12,6 +12,7 @@ import statistics as st
 import threading
 import os
 import time
+import random
 
 class iot_dj:
     def __init__(self, spotify_client, thingspeak_client, sensor_client):
@@ -28,13 +29,19 @@ class iot_dj:
             "Morning work": "spotify:playlist:7MqlcNyUCdMhDhWZYhtMYA" 
         }
 
+        self.global_radar_data = []
+        self.global_light_raw_data = []
+        self.global_light_volt_data = []
+
     def start_recording(self):
         self.music_recording_thread = threading.Thread(target=self.record_music) 
         self.environment_recording_thread = threading.Thread(target=self.ambient_readings)
         self.music_recording_thread.start()
         self.environment_recording_thread.start()
+        #self.current_track = None
 
-    def record_music(self):
+    def record_music_data(self):
+        # For data collection
         last_update_time = datetime.now().timestamp()
         last_track = None
         counter = 0
@@ -54,7 +61,9 @@ class iot_dj:
                 last_update_time = current_time
                 counter += 1
 
-    def ambient_readings(self):
+    def record_ambient_data(self):
+        # This is a function for recording the ambient condition data and taking an average at regular intervals
+        # This is for the purpose of data collection for data analysis and does not run when the iot_dj is actually playing
 
         last_update_time = datetime.now().timestamp()
         update_interval = 60
@@ -83,23 +92,79 @@ class iot_dj:
 
                     last_update_time = current_time
 
-    def select_and_queue_song(self, state):
-        pass
+    def ambient_readings(self):
+        # To run as a thread when in playing state
+        # Appends readings to class-wide lists
 
+        # The light reading is taken every 10 seconds
+        current_time = datetime.now().timestamp()
+        last_update_time = datetime.now().timestamp()
+        light_update_interval = 10
+        
+        while True:
+            # The radar readings are being taken continuously
+            self.sensor_client.radar_readings_append(self.gloabl_radar_data)
 
-    def queue_song(self):
-        # recommendation = spotify_client.create_recommendation(current_track['song_id'])
-        # print(f"Song recommendation: {recommendation['song_name']}")
-        waxwing = "spotify:track:4gGh7b3nKa4rlxyPLWcfTd"
-        response = self.spotify_client.queue_song(waxwing)
-        print(response)
+            if current_time - last_update_time >= light_update_interval:
+                self.sensor_client.light_raw_append(self.gloabl_light_raw_data)
+                self.sensor_client.light_voltage_append(self.gloabl_light_volt_data)
 
-    def fade_in_song(self, song_uri):
-        return None
+    def get_ambient_metrics(self):
+        #this runs every time the programme wants to make an assessment of what playlist to play from next
+        #it takes the average of all the readings recorded since the last time it was called
 
+        radar_avg = st.mean(self.gloabl_radar_data)
+        radar_stdev = st.stdev(self.gloabl_radar_data)
+        lightraw_avg = st.mean(self.global_light_raw_data)
+        lightvolt_avg = st.mean(self.gloabl_light_volt_data)
 
-def main():
-    print("Don't run this file")
+        environment_dict = {
+                    'Light RAW': lightraw_avg,
+                    'Light VOLTAGE': lightvolt_avg,
+                    'Radar Mean': radar_avg,
+                    'Radar StDev': radar_stdev
+                }
+        
+        # resetting arrays
+        self.global_radar_data = []
+        self.global_light_raw_data = []
+        self.global_light_volt_data = []
 
-if __name__ == "__main__":
-    main()
+        return environment_dict
+    
+    def determine_state(self):
+        # Should take ambient_metrics as parameter eventually
+        # This is the function that makes a decision based on data
+        possible_states = ["Dance", "Party background", "Wake up", "Going to sleep", "Evening work", "Morning work"]
+        state = possible_states[random.randint(0,5)]
+        return "Dance"
+
+    def select_song(self):
+        #self.get_ambient_metrics
+        state_selection = self.determine_state()
+        playlist_selection = self.state_playlists[state_selection]
+        song_selection = self.spotify_client.get_random_song_from_playlist(playlist_selection)
+        
+        return song_selection
+    
+    def main(self):
+        #starts running when the code is run
+
+        is_playing = self.spotify_client.playback_state()["is_playing"]
+
+        if not is_playing:
+            song_selection = self.select_song()
+            self.spotify_client.play_song(song_selection)
+
+        while True:
+            playback_state = self.spotify_client.playback_state()
+            song_duration = playback_state["song_duration"]
+            time_into_song = playback_state["time_into_song"]
+            time_left_s = (song_duration - time_into_song)/1000
+            print(time_left_s)
+            time.sleep(time_left_s - 10) #delays until it is 10 seconds until the end of the song
+
+            print("now")
+            song_selection = self.select_song()
+            self.spotify_client.queue_song(song_selection)
+            time.sleep(11)
