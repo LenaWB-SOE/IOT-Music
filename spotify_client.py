@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL
+import random
 
 class SpotifyClient:
     def __init__(self, access_token=None, refresh_token=None, expires_at=None):
@@ -73,8 +74,8 @@ class SpotifyClient:
     def get_random_song_from_playlist(self, playlist_uri):
         playlist_id = playlist_uri[17:]
         print(playlist_id)
-        offset = 2
-        limit = 2
+        offset = random.randint(0,50)
+        limit = 1
         response = requests.get(f"{API_BASE_URL}playlists/{playlist_id}/tracks?offset={offset}&limit={limit}", headers=self.get_headers())
         if response.status_code == 200:
             song_uri = response.json()["items"][0]["track"]["uri"]
