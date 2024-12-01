@@ -169,3 +169,5 @@ class iot_dj:
             song_selection = self.select_song()
             self.spotify_client.queue_song(song_selection)
             time.sleep(11)
+
+            #what happens if someone skips a song and doesn't let it play all the way through?

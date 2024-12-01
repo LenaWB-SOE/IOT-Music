@@ -89,7 +89,7 @@ class SpotifyClient:
     
     def get_random_song_from_playlist(self, playlist_uri):
         playlist_id = playlist_uri[17:]
-        offset = random.randint(0,50)
+        offset = random.randint(0,49) #each playlist has 50 songs
         limit = 1
         response = requests.get(f"{API_BASE_URL}playlists/{playlist_id}/tracks?offset={offset}&limit={limit}", headers=self.get_headers())
         if response.status_code == 200:
