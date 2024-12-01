@@ -166,7 +166,6 @@ class iot_dj:
             print(time_left_s)
             time.sleep(time_left_s - 10) #delays until it is 10 seconds until the end of the song
 
-            print("now")
             song_selection = self.select_song()
             self.spotify_client.queue_song(song_selection)
             time.sleep(11)
