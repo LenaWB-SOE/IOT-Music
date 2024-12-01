@@ -93,6 +93,7 @@ class SpotifyClient:
         limit = 1
         response = requests.get(f"{API_BASE_URL}playlists/{playlist_id}/tracks?offset={offset}&limit={limit}", headers=self.get_headers())
         if response.status_code == 200:
+            print(response.json())
             song_uri = response.json()["items"][0]["track"]["uri"]
             return song_uri
         else:
