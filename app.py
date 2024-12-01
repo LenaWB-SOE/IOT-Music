@@ -108,8 +108,10 @@ def run_application():
     #spotify_client.play_album("spotify:playlist:37i9dQZF1EQpVaHRDcozEz")
     #song_selection = spotify_client.get_random_song_from_playlist("spotify:playlist:1YNBItC3Z8fvWslhJHYFuG")
     #spotify_client.play_song(song_selection)
-    IOT_DJ.main()
-    #spotify:playlist:1YNBItC3Z8fvWslhJHYFuG
+
+    print(spotify_client.playback_state())
+    #IOT_DJ.main()
+
 
     return redirect('/data-visualisation')
 
