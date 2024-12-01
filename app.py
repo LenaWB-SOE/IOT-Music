@@ -1,6 +1,7 @@
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
+from sensor_client import SensorClient
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
@@ -96,17 +97,18 @@ def run_application():
     thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     #creating an instance of the SensorClient class
-    #sensor_client = SensorClient()
+    sensor_client = SensorClient()
 
     #creating an instance of the iot_dj class
-    #IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
+    IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
 
     #IOT_DJ.start_recording()
     #IOT_DJ.record_music()
     #IOT_DJ.ambient_readings()
     #spotify_client.play_album("spotify:playlist:37i9dQZF1EQpVaHRDcozEz")
-    song_selection = spotify_client.get_random_song_from_playlist("spotify:playlist:1YNBItC3Z8fvWslhJHYFuG")
-    spotify_client.play_song(song_selection)
+    #song_selection = spotify_client.get_random_song_from_playlist("spotify:playlist:1YNBItC3Z8fvWslhJHYFuG")
+    #spotify_client.play_song(song_selection)
+    IOT_DJ.main()
     #spotify:playlist:1YNBItC3Z8fvWslhJHYFuG
 
     return redirect('/data-visualisation')

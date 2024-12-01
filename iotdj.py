@@ -1,7 +1,7 @@
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
-#from sensor_client import SensorClient
+from sensor_client import SensorClient
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
@@ -153,10 +153,12 @@ class iot_dj:
         is_playing = self.spotify_client.playback_state()["is_playing"]
 
         if not is_playing:
+            print("not playing")
             song_selection = self.select_song()
             self.spotify_client.play_song(song_selection)
 
         while True:
+            print("playing")
             playback_state = self.spotify_client.playback_state()
             song_duration = playback_state["song_duration"]
             time_into_song = playback_state["time_into_song"]
