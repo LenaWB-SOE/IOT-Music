@@ -1,7 +1,7 @@
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
-from sensor_client import SensorClient
+#from sensor_client import SensorClient
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
