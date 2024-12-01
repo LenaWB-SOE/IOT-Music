@@ -50,9 +50,10 @@ class SpotifyClient:
     
     def queue_song(self, song_uri):
         response = requests.post(f"{API_BASE_URL}me/player/queue?uri={song_uri}", headers=self.get_headers())
-        print(f"Error {response.status_code}: {response.text}")
         if response.status_code == 200:
             print("Song queued")
+        else:
+            print(f"Error {response.status_code}: {response.text}")
         return response
     
     def play_album(self, album_uri):
@@ -87,7 +88,6 @@ class SpotifyClient:
     
     def get_random_song_from_playlist(self, playlist_uri):
         playlist_id = playlist_uri[17:]
-        print(playlist_id)
         offset = random.randint(0,50)
         limit = 1
         response = requests.get(f"{API_BASE_URL}playlists/{playlist_id}/tracks?offset={offset}&limit={limit}", headers=self.get_headers())
