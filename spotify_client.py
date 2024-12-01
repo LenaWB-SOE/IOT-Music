@@ -80,7 +80,7 @@ class SpotifyClient:
             "song_duration": response.json()["item"]["duration_ms"],
             "time_into_song": response.json()["progress_ms"]
             }
-            print(playback_state)
+            #print(playback_state)
             return playback_state
         else:
             print(f"Error {response.status_code}: {response.text}")

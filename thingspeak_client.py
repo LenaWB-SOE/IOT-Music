@@ -67,7 +67,7 @@ class ThingSpeakClient:
         except requests.exceptions.RequestException as e:
             print(f"An error occurred: {e}")
 
-    def update_environment_channel(self, data_dict):
+    def update_environment_channel(self, data_dict, label):
         """
         Update a ThingSpeak channel with the given data dictionary.
         Args:
@@ -80,7 +80,9 @@ class ThingSpeakClient:
             'field1': weekday,
             'field2': data_dict.get('Light RAW'),
             'field3': data_dict.get('Light VOLTAGE'),
-            'field4': data_dict.get('Radar'),
+            'field4': data_dict.get('Radar AVG'),
+            'field5': data_dict.get('Radar STDEV'),
+            'field6': label
         }
         
         try:

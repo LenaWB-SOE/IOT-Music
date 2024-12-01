@@ -34,8 +34,8 @@ class iot_dj:
         self.global_light_volt_data = []
 
     def start_recording(self):
-        self.music_recording_thread = threading.Thread(target=self.record_music) 
-        self.environment_recording_thread = threading.Thread(target=self.ambient_readings)
+        self.music_recording_thread = threading.Thread(target=self.record_music_data) 
+        self.environment_recording_thread = threading.Thread(target=self.record_ambient_data)
         self.music_recording_thread.start()
         self.environment_recording_thread.start()
         #self.current_track = None
@@ -61,7 +61,7 @@ class iot_dj:
                 last_update_time = current_time
                 counter += 1
 
-    def record_ambient_data(self):
+    def record_ambient_data(self, label):
         # This is a function for recording the ambient condition data and taking an average at regular intervals
         # This is for the purpose of data collection for data analysis and does not run when the iot_dj is actually playing
 
@@ -83,8 +83,9 @@ class iot_dj:
                     environment_dict = {
                         'Light RAW': light[0],
                         'Light VOLTAGE': light[1],
-                        'Radar Mean': radar_avg,
-                        'Radar StDev': radar_stdev
+                        'Radar AVG': radar_avg,
+                        'Radar STDEV': radar_stdev,
+                        'Label': label
                     }
                     self.thingspeak_client.update_environment_channel(environment_dict)
                     print(environment_dict)
