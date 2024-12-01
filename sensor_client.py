@@ -96,7 +96,7 @@ class SensorClient:
 
 
 
-def main():
+def main(csv_file_path="ambient_data.csv"):
     sensor_client = SensorClient()
 
     # Initialize variables
@@ -105,6 +105,22 @@ def main():
     radar_data = []
     #light_raw_data = []
     #light_volt_data = []
+
+    # Check if CSV file exists and create it with headers if not
+    try:
+        with open(csv_file_path, mode='x', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=[
+                'Timestamp',
+                'Light RAW',
+                'Light VOLTAGE',
+                'Radar AVG',
+                'Radar STDEV',
+                'Label'
+            ])
+            writer.writeheader()
+    except FileExistsError:
+        print("File already exists")
+        pass  # If the file already exists, proceed without creating a new one
 
 
     while True:
@@ -128,12 +144,21 @@ def main():
                     'Radar Mean': radar_avg,
                     'Radar StDev': radar_stdev
                 }
+                # Update ThingSpeak
                 #self.thingspeak_client.update_environment_channel(environment_dict)
+
+                # Write to CSV
+                with open(csv_file_path, mode='a', newline='') as csvfile:
+                    writer = csv.DictWriter(csvfile, fieldnames=environment_dict.keys())
+                    writer.writerow(environment_dict)
+
+                # Debug output
                 print(environment_dict)
+
+                # Reset radar data and update time
                 radar_data = []
-                #light_raw_data = []
-                #light_volt_data = []
                 last_update_time = current_time
 
 if __name__ == "__main__":
     main()
+

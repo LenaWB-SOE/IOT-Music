@@ -110,7 +110,8 @@ def run_application():
     #spotify_client.play_song(song_selection)
 
     #spotify_client.playback_state()
-    IOT_DJ.main()
+    #IOT_DJ.main()
+    IOT_DJ.record_ambient_data("Dancing")
 
 
     return redirect('/data-visualisation')

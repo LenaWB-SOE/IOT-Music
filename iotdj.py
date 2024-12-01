@@ -61,13 +61,29 @@ class iot_dj:
                 last_update_time = current_time
                 counter += 1
 
-    def record_ambient_data(self, label):
+    def record_ambient_data(self, label, csv_file_path="ambient_data.csv"):
         # This is a function for recording the ambient condition data and taking an average at regular intervals
         # This is for the purpose of data collection for data analysis and does not run when the iot_dj is actually playing
 
         last_update_time = datetime.now().timestamp()
         update_interval = 60
         radar_data = []
+
+        # Check if CSV file exists and create it with headers if not
+        try:
+            with open(csv_file_path, mode='x', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=[
+                    'Timestamp',
+                    'Light RAW',
+                    'Light VOLTAGE',
+                    'Radar AVG',
+                    'Radar STDEV',
+                    'Label'
+                ])
+                writer.writeheader()
+        except FileExistsError:
+            print("File already exists")
+            pass  # If the file already exists, proceed without creating a new one
 
         while True:
             current_time = datetime.now().timestamp()
@@ -87,10 +103,19 @@ class iot_dj:
                         'Radar STDEV': radar_stdev,
                         'Label': label
                     }
+                    # Update ThingSpeak
                     self.thingspeak_client.update_environment_channel(environment_dict)
-                    print(environment_dict)
-                    radar_data = []
 
+                    # Write to CSV
+                    with open(csv_file_path, mode='a', newline='') as csvfile:
+                        writer = csv.DictWriter(csvfile, fieldnames=environment_dict.keys())
+                        writer.writerow(environment_dict)
+
+                    # Debug output
+                    print(environment_dict)
+
+                    # Reset radar data and update time
+                    radar_data = []
                     last_update_time = current_time
 
     def ambient_readings(self):
