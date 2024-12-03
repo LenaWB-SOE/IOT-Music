@@ -127,7 +127,7 @@ def main(label, csv_file_path="ambient_data.csv"):
         current_time = datetime.now().timestamp()
 
         sensor_client.radar_readings_append(radar_data)
-        print(radar_data)
+        #print(radar_data)
         #sensor_client.light_raw_append(light_raw_data)
         #sensor_client.light_voltage_append(light_volt_data)
 
