@@ -72,6 +72,14 @@ class SpotifyClient:
             print(f"Error {response.status_code}: {response.text}")
         return response
     
+    def pause_player(self):
+        response = requests.put(f"{API_BASE_URL}me/player/pause", headers=self.get_headers())
+        if response.status_code == 204:
+            print("Song paused")
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+        return response
+    
     def playback_state(self):
         response = requests.get(f"{API_BASE_URL}me/player", headers=self.get_headers())
         if response.status_code == 200:
