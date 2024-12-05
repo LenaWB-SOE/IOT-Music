@@ -99,6 +99,7 @@ class SensorClient:
 
 def main(label, csv_file_path="ambient_data.csv"):
     sensor_client = SensorClient()
+    thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     # Initialize variables
     last_update_time = datetime.now().timestamp()
@@ -151,7 +152,7 @@ def main(label, csv_file_path="ambient_data.csv"):
                     'Label': label
                 }
                 # Update ThingSpeak
-                ThingSpeakClient.update_environment_channel(environment_dict)
+                thingspeak_client.update_environment_channel(environment_dict)
 
                 # Write to CSV
                 with open(csv_file_path, mode='a', newline='') as csvfile:
