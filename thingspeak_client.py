@@ -73,7 +73,7 @@ class ThingSpeakClient:
         Args:
             data_dict (dict): Data to be sent to ThingSpeak.
         """
-        weekday = datetime.datetime.today().weekday()
+        #weekday = datetime.datetime.today().weekday()
 
         payload = {
             'api_key': self.environ_write_api_key,
@@ -88,7 +88,7 @@ class ThingSpeakClient:
             response = requests.post(self.base_url, data=payload)
             if response.status_code == 200:
                 print("Data successfully updated to ThingSpeak!")
-                print(f"Response Content: {response.text}")
+                #print(f"Response Content: {response.text}")
             else:
                 print(f"Failed to update data. Status code: {response.status_code}")
                 print(response.text)
