@@ -6,8 +6,12 @@ data = pd.read_csv("ambient_data.csv")
 # Display the first few rows
 print(data.head())
 
-# import numpy as np
-# import pandas as pd
+# Check the columns and data types
+print(data.info())
 
-# print("Numpy version:", np.__version__)
-# print("Pandas version:", pd.__version__)
+# Summary statistics for numerical columns
+print(data.describe())
+
+# Check for missing values
+print(data.isnull().sum())
+
