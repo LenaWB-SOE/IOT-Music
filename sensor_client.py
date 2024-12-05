@@ -18,6 +18,7 @@ import board
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
+
 class SensorClient:
     def __init__(self):
         # Configure the serial port for Radar
@@ -150,7 +151,7 @@ def main(label, csv_file_path="ambient_data.csv"):
                     'Label': label
                 }
                 # Update ThingSpeak
-                #self.thingspeak_client.update_environment_channel(environment_dict)
+                ThingSpeakClient.thingspeak_client.update_environment_channel(environment_dict)
 
                 # Write to CSV
                 with open(csv_file_path, mode='a', newline='') as csvfile:
@@ -165,7 +166,7 @@ def main(label, csv_file_path="ambient_data.csv"):
                 last_update_time = current_time
 
 if __name__ == "__main__":
-    main("Sleeping")
+    main("Evening work")
 
 # Wake up
 # Morning work
