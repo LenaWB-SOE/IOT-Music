@@ -146,8 +146,8 @@ def main(label, csv_file_path="ambient_data.csv"):
                     'Timestamp': timestamp,
                     'Light RAW': light[0],
                     'Light VOLTAGE': light[1],
-                    'Radar Mean': radar_avg,
-                    'Radar StDev': radar_stdev,
+                    'Radar AVG': radar_avg,
+                    'Radar STDEV': radar_stdev,
                     'Label': label
                 }
                 # Update ThingSpeak
