@@ -151,7 +151,7 @@ def main(label, csv_file_path="ambient_data.csv"):
                     'Label': label
                 }
                 # Update ThingSpeak
-                ThingSpeakClient.thingspeak_client.update_environment_channel(environment_dict)
+                ThingSpeakClient.update_environment_channel(environment_dict)
 
                 # Write to CSV
                 with open(csv_file_path, mode='a', newline='') as csvfile:
