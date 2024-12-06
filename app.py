@@ -2,6 +2,7 @@ from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, 
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
 from sensor_client import SensorClient
+from Data_analysis import DataAnalysisClass
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
@@ -94,13 +95,17 @@ def run_application():
     )
 
     #creating an instance of the ThingSpeakClient class
-    thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
+    #thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     #creating an instance of the SensorClient class
-    sensor_client = SensorClient()
+    #sensor_client = SensorClient()
 
     #creating an instance of the iot_dj class
-    IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
+    #IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
+
+    #creating and instance of the DataAnalysisClass
+    Data_Analysis = DataAnalysisClass("ambient_data.csv")
+    Data_Analysis.pairplot()
 
     #IOT_DJ.start_recording()
     #IOT_DJ.record_music()
@@ -111,13 +116,15 @@ def run_application():
 
     #spotify_client.playback_state()
     #IOT_DJ.main()
-    IOT_DJ.record_ambient_data("Dancing")
+    #IOT_DJ.record_ambient_data("Dancing")
 
 
-    return redirect('/data-visualisation')
+    #return redirect('/data-visualisation')
+    return None
 
 @app.route('/data-visualisation')
 def data_visualisation():
+    
     return "Data being recorded on <a href='https://thingspeak.mathworks.com/channels/2735338/private_show'>ThingSpeak</a>"
 
 if __name__ == '__main__':
