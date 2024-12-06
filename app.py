@@ -95,17 +95,17 @@ def run_application():
     )
 
     #creating an instance of the ThingSpeakClient class
-    #thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
+    thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     #creating an instance of the SensorClient class
-    #sensor_client = SensorClient()
+    sensor_client = SensorClient()
 
     #creating an instance of the iot_dj class
-    #IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
+    IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
 
     #creating and instance of the DataAnalysisClass
     Data_Analysis = DataAnalysisClass("ambient_data.csv")
-    Data_Analysis.pairplot()
+    #Data_Analysis.pairplot()
 
     #IOT_DJ.start_recording()
     #IOT_DJ.record_music()
