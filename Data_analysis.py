@@ -108,14 +108,14 @@ class DataAnalysisClass:
 def main():
     data_analysis = DataAnalysisClass("ambient_data.csv")
 
-    # data_analysis.boxplot('Light RAW')
-    # data_analysis.boxplot('Light VOLTAGE')
-    # data_analysis.boxplot('Radar AVG')
-    # data_analysis.boxplot('Radar STDEV')
+    data_analysis.boxplot('Light RAW')
+    data_analysis.boxplot('Light VOLTAGE')
+    data_analysis.boxplot('Radar AVG')
+    data_analysis.boxplot('Radar STDEV')
 
-    #data_analysis.pairplot()
+    data_analysis.pairplot()
 
-    data_analysis.machine_learning()
+    #data_analysis.machine_learning()
 
 if __name__ == "__main__":
     main()

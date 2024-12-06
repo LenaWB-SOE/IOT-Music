@@ -167,7 +167,7 @@ def main(label, csv_file_path="ambient_data.csv"):
                 last_update_time = current_time
 
 if __name__ == "__main__":
-    main("Wake up")
+    main("Sleeping", "sleeping_data.csv")
 
 # Wake up
 # Morning work

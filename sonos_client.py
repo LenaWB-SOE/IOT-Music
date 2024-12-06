@@ -14,20 +14,21 @@ if devices:
 else:
     print("No Sonos devices found on the network.")
 
-# Replace with the IP address of your Sonos speaker
-ip = "192.168.1.118"
+# # Replace with the IP address of your Sonos speaker
+# ip = "192.168.1.118"
+ip = "192.168.0.40"
 speaker = SoCo(ip)
 
 print(f"Connected to: {speaker.player_name}")
 
 volume = 0
 speaker.volume = volume
-theta=0
+
 t = 0
 
 while True:
-    volume = 30* (1 + math.sin(t))
+    volume = 30* (2 + math.sin(t))
     speaker.volume = volume
     t += 20
-    time.sleep(0.2)
+    time.sleep(0.4)
 
