@@ -2,7 +2,7 @@ from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, 
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
 from sensor_client import SensorClient
-from Data_analysis import DataAnalysisClass
+#from Data_analysis import DataAnalysisClass
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
@@ -104,7 +104,7 @@ def run_application():
     IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
 
     #creating and instance of the DataAnalysisClass
-    Data_Analysis = DataAnalysisClass("ambient_data.csv")
+    #Data_Analysis = DataAnalysisClass("ambient_data.csv")
     #Data_Analysis.pairplot()
 
     #IOT_DJ.start_recording()
