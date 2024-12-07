@@ -182,7 +182,7 @@ class iot_dj:
 
         # Predict and decode
         prediction = self.model.predict(new_data)
-        decoded_prediction = self.encoder.inverse_transform(prediction)
+        decoded_prediction = self.encoder.inverse_transform(prediction)[0]
 
         print("Predicted Label:", decoded_prediction)
 
