@@ -144,10 +144,13 @@ class iot_dj:
             self.sensor_client.radar_readings_append(self.global_radar_data)
 
             if current_time - last_update_time >= light_update_interval:
+                #light = self.sensor_client.light_readings()
+                #self.global_light_raw_data.append(light[0])
+                #self.global_light_volt_data.append(light[1])
                 self.sensor_client.light_raw_append(self.global_light_raw_data)
                 self.sensor_client.light_voltage_append(self.global_light_volt_data)
+                last_update_time = current_time
 
-            print(self.global_light_raw_data)
 
     def get_ambient_metrics(self):
         #this runs every time the programme wants to make an assessment of what playlist to play from next
