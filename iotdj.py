@@ -13,6 +13,8 @@ import threading
 import os
 import time
 import random
+import joblib
+import pandas as pd
 
 class iot_dj:
     def __init__(self, spotify_client, thingspeak_client, sensor_client):
@@ -33,12 +35,22 @@ class iot_dj:
         self.global_light_raw_data = []
         self.global_light_volt_data = []
 
+        # Load the saved model, scaler, and encoder
+        self.model = joblib.load("saved_models/trained_model.pkl")
+        self.encoder = joblib.load("saved_models/label_encoder.pkl")
+
     def start_recording(self):
         self.music_recording_thread = threading.Thread(target=self.record_music_data) 
         self.environment_recording_thread = threading.Thread(target=self.record_ambient_data)
         self.music_recording_thread.start()
         self.environment_recording_thread.start()
         #self.current_track = None
+
+    def play(self):
+        self.environment_recording_thread = threading.Thread(target=self.record_ambient_data)
+        self.main_dj = threading.Thread(target=self.main)
+        self.environment_recording_thread.start()
+        self.main_dj.start()
 
     def record_music_data(self):
         # For data collection
@@ -158,17 +170,27 @@ class iot_dj:
 
         return environment_dict
     
-    def determine_state(self):
-        # Should take ambient_metrics as parameter eventually
-        # This is the function that makes a decision based on data
-        possible_states = ["Dance", "Party background", "Wake up", "Going to sleep", "Evening work", "Morning work"]
-        state = possible_states[random.randint(0,5)]
-        return "Dance"
+    def determine_state(self, ambient_metrics):
+        # This is the function that makes a prediction on the 'state' of the room based on live data
+        new_data = pd.DataFrame(ambient_metrics)
+
+        # Predict and decode
+        prediction = self.model.predict(new_data)
+        decoded_prediction = self.encoder.inverse_transform(prediction)
+
+        print("Predicted Label:", decoded_prediction)
+
+        #possible_states = ["Dance", "Party background", "Wake up", "Going to sleep", "Evening work", "Morning work"]
+        #state = possible_states[random.randint(0,5)]
+
+        return decoded_prediction
+    
+
 
     def select_song(self):
-        #self.get_ambient_metrics
-        state_selection = self.determine_state()
-        playlist_selection = self.state_playlists[state_selection]
+        read_data = self.get_ambient_metrics
+        state_selection = self.determine_state(read_data)
+        playlist_selection = self.state_playlists["Dance"]
         song_selection = self.spotify_client.get_random_song_from_playlist(playlist_selection)
         
         return song_selection

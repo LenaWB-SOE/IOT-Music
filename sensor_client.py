@@ -74,7 +74,6 @@ class SensorClient:
                         data_list.append(int(parsed_data[0]))
                         #print(parsed_data)
         
-
         return data_list
     
     def light_raw_append(self, data_list):

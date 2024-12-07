@@ -6,6 +6,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
+import joblib
+import os
+
 
 class DataAnalysisClass:
     def __init__(self, data_csv = "ambient_data.csv"):
@@ -104,18 +107,58 @@ class DataAnalysisClass:
         for feature, importance in zip(X.columns, importances):
             print(f"{feature}: {importance:.4f}")
 
+    def machine_learning2(self, save_path="saved_models"):
+        # Create a directory for saving model files if it doesn't exist
+        os.makedirs(save_path, exist_ok=True)
+
+        # Encode labels as integers
+        encoder = LabelEncoder()
+        self.sensor_data['Label_encoded'] = encoder.fit_transform(self.sensor_data['Label'])
+
+        # Select features and target
+        X = self.sensor_data[['Light RAW', 'Light VOLTAGE', 'Radar AVG', 'Radar STDEV']]
+        y = self.sensor_data['Label_encoded']
+
+        # Check the class-to-label mapping
+        class_mapping = dict(zip(encoder.classes_, encoder.transform(encoder.classes_)))
+        print("Class-to-label mapping:", class_mapping)
+
+        # Split data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+        # Train Random Forest model
+        clf = RandomForestClassifier(random_state=42)
+        clf.fit(X_train, y_train)
+
+        # Evaluate the model
+        y_pred = clf.predict(X_test)
+        print("Classification Report:")
+        print(classification_report(y_test, y_pred))
+
+        # Feature importance
+        importances = clf.feature_importances_
+        for feature, importance in zip(X.columns, importances):
+            print(f"{feature}: {importance:.4f}")
+
+        # Save the model, scaler, and encoder
+        joblib.dump(clf, f"{save_path}/trained_model.pkl")
+        joblib.dump(encoder, f"{save_path}/label_encoder.pkl")
+
+        print(f"Model, scaler, and encoder saved in '{save_path}'.")
+
+
 
 def main():
     data_analysis = DataAnalysisClass("ambient_data.csv")
 
-    data_analysis.boxplot('Light RAW')
-    data_analysis.boxplot('Light VOLTAGE')
-    data_analysis.boxplot('Radar AVG')
-    data_analysis.boxplot('Radar STDEV')
+    # data_analysis.boxplot('Light RAW')
+    # data_analysis.boxplot('Light VOLTAGE')
+    # data_analysis.boxplot('Radar AVG')
+    # data_analysis.boxplot('Radar STDEV')
 
-    data_analysis.pairplot()
+    # data_analysis.pairplot()
 
-    #data_analysis.machine_learning()
+    data_analysis.machine_learning2()
 
 if __name__ == "__main__":
     main()
