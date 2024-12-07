@@ -24,9 +24,8 @@ class iot_dj:
         self.sensor_client = sensor_client
         self.state_playlists = {
             "Dance": "spotify:playlist:1YNBItC3Z8fvWslhJHYFuG",
-            "Party background": "spotify:playlist:4TEZDSeweLF2mxg7gmOvaX",
             "Wake up": "spotify:playlist:07US4Vsv0ycWb0hTk0PLrs",
-            "Going to sleep": "spotify:playlist:6ZEVixHqMVi9rHtSYP3tfQ", 
+            "Relaxing": "spotify:playlist:6ZEVixHqMVi9rHtSYP3tfQ", 
             "Evening work": "spotify:playlist:2yffgYM7klV3HkpZMRKPO7", 
             "Morning work": "spotify:playlist:7MqlcNyUCdMhDhWZYhtMYA" 
         }
@@ -197,7 +196,7 @@ class iot_dj:
     def select_song(self):
         read_data = self.get_ambient_metrics()
         state_selection = self.determine_state(read_data)
-        playlist_selection = self.state_playlists["Dance"]
+        playlist_selection = self.state_playlists[state_selection]
         song_selection = self.spotify_client.get_random_song_from_playlist(playlist_selection)
         
         return song_selection
