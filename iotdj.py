@@ -36,8 +36,8 @@ class iot_dj:
         self.global_light_volt_data = []
 
         # Load the saved model, scaler, and encoder
-        self.model = joblib.load("saved_models/trained_model.pkl")
-        self.encoder = joblib.load("saved_models/label_encoder.pkl")
+        self.model = joblib.load("ml_models/trained_model.pkl")
+        self.encoder = joblib.load("ml_models/label_encoder.pkl")
 
     def start_recording(self):
         self.music_recording_thread = threading.Thread(target=self.record_music_data) 
