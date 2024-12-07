@@ -165,8 +165,8 @@ class iot_dj:
         environment_dict = {
                     'Light RAW': [lightraw_avg],
                     'Light VOLTAGE': [lightvolt_avg],
-                    'Radar Mean': [radar_avg],
-                    'Radar StDev': [radar_stdev]
+                    'Radar AVG': [radar_avg],
+                    'Radar STDEV': [radar_stdev]
                 }
         
         # resetting arrays
