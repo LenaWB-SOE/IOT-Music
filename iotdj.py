@@ -135,11 +135,12 @@ class iot_dj:
         # Appends readings to class-wide lists
 
         # The light reading is taken every 10 seconds
-        current_time = datetime.now().timestamp()
+        
         last_update_time = datetime.now().timestamp()
         light_update_interval = 10
         
         while True:
+            current_time = datetime.now().timestamp()
             # The radar readings are being taken continuously
             self.sensor_client.radar_readings_append(self.global_radar_data)
 
