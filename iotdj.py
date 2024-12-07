@@ -147,6 +147,8 @@ class iot_dj:
                 self.sensor_client.light_raw_append(self.global_light_raw_data)
                 self.sensor_client.light_voltage_append(self.global_light_volt_data)
 
+            print(self.global_light_raw_data)
+
     def get_ambient_metrics(self):
         #this runs every time the programme wants to make an assessment of what playlist to play from next
         #it takes the average of all the readings recorded since the last time it was called
