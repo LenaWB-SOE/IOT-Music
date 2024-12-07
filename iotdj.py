@@ -141,20 +141,20 @@ class iot_dj:
         
         while True:
             # The radar readings are being taken continuously
-            self.sensor_client.radar_readings_append(self.gloabl_radar_data)
+            self.sensor_client.radar_readings_append(self.global_radar_data)
 
             if current_time - last_update_time >= light_update_interval:
-                self.sensor_client.light_raw_append(self.gloabl_light_raw_data)
-                self.sensor_client.light_voltage_append(self.gloabl_light_volt_data)
+                self.sensor_client.light_raw_append(self.global_light_raw_data)
+                self.sensor_client.light_voltage_append(self.global_light_volt_data)
 
     def get_ambient_metrics(self):
         #this runs every time the programme wants to make an assessment of what playlist to play from next
         #it takes the average of all the readings recorded since the last time it was called
 
-        radar_avg = st.mean(self.gloabl_radar_data)
-        radar_stdev = st.stdev(self.gloabl_radar_data)
+        radar_avg = st.mean(self.global_radar_data)
+        radar_stdev = st.stdev(self.global_radar_data)
         lightraw_avg = st.mean(self.global_light_raw_data)
-        lightvolt_avg = st.mean(self.gloabl_light_volt_data)
+        lightvolt_avg = st.mean(self.global_light_volt_data)
 
         environment_dict = {
                     'Light RAW': lightraw_avg,
