@@ -47,7 +47,7 @@ class iot_dj:
         #self.current_track = None
 
     def play(self):
-        self.environment_recording_thread = threading.Thread(target=self.record_ambient_data)
+        self.environment_recording_thread = threading.Thread(target=self.ambient_readings)
         self.main_dj = threading.Thread(target=self.main)
         self.environment_recording_thread.start()
         self.main_dj.start()
@@ -172,7 +172,7 @@ class iot_dj:
     
     def determine_state(self, ambient_metrics):
         # This is the function that makes a prediction on the 'state' of the room based on live data
-        new_data = pd.DataFrame(ambient_metrics)
+        new_data = pd.DataFrame.from_dict(ambient_metrics)
 
         # Predict and decode
         prediction = self.model.predict(new_data)
