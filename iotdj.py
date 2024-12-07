@@ -157,10 +157,10 @@ class iot_dj:
         lightvolt_avg = st.mean(self.global_light_volt_data)
 
         environment_dict = {
-                    'Light RAW': lightraw_avg,
-                    'Light VOLTAGE': lightvolt_avg,
-                    'Radar Mean': radar_avg,
-                    'Radar StDev': radar_stdev
+                    'Light RAW': [lightraw_avg],
+                    'Light VOLTAGE': [lightvolt_avg],
+                    'Radar Mean': [radar_avg],
+                    'Radar StDev': [radar_stdev]
                 }
         
         # resetting arrays
@@ -172,6 +172,7 @@ class iot_dj:
     
     def determine_state(self, ambient_metrics):
         # This is the function that makes a prediction on the 'state' of the room based on live data
+
         new_data = pd.DataFrame.from_dict(ambient_metrics)
 
         # Predict and decode
@@ -188,7 +189,7 @@ class iot_dj:
 
 
     def select_song(self):
-        read_data = self.get_ambient_metrics
+        read_data = self.get_ambient_metrics()
         state_selection = self.determine_state(read_data)
         playlist_selection = self.state_playlists["Dance"]
         song_selection = self.spotify_client.get_random_song_from_playlist(playlist_selection)
