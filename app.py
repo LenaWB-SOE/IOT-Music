@@ -120,8 +120,8 @@ def run_application():
     IOT_DJ.play()
 
 
-    #return redirect('/data-visualisation')
-    return None
+    return redirect('/data-visualisation')
+    #return None
 
 @app.route('/data-visualisation')
 def data_visualisation():
