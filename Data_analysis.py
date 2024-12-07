@@ -107,7 +107,7 @@ class DataAnalysisClass:
         for feature, importance in zip(X.columns, importances):
             print(f"{feature}: {importance:.4f}")
 
-    def machine_learning2(self, save_path="saved_models"):
+    def machine_learning2(self, save_path="ml_models"):
         # Create a directory for saving model files if it doesn't exist
         os.makedirs(save_path, exist_ok=True)
 
