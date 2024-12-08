@@ -38,15 +38,100 @@ class iot_dj:
         self.model = joblib.load("ml_models/trained_model.pkl")
         self.encoder = joblib.load("ml_models/label_encoder.pkl")
 
+    def start_recording(self):
+        self.music_recording_thread = threading.Thread(target=self.record_music_data) 
+        self.environment_recording_thread = threading.Thread(target=self.record_ambient_data)
+        self.music_recording_thread.start()
+        self.environment_recording_thread.start()
+        #self.current_track = None
+
     def play(self):
-        self.ambient_readings_thread = threading.Thread(target=self.ambient_readings)
-        self.main_dj_thread = threading.Thread(target=self.main)
-        self.ambient_readings_thread.start()
-        self.main_dj_thread.start()
+        self.environment_recording_thread = threading.Thread(target=self.ambient_readings)
+        self.main_dj = threading.Thread(target=self.main)
+        self.environment_recording_thread.start()
+        self.main_dj.start()
+
+    def record_music_data(self):
+        # For data collection
+        last_update_time = datetime.now().timestamp()
+        last_track = None
+        counter = 0
+        update_interval = 60
+
+        while True:
+            current_time = datetime.now().timestamp()
+            
+            if current_time - last_update_time >= update_interval or counter == 0:
+                current_track = self.spotify_client.get_current_track()
+                if current_track != None and (counter == 0 or current_track['song uri'] != last_track['song uri']):
+                    print(f"Current Track: {current_track.get('song')}")
+                    self.thingspeak_client.update_songs_played_channel(current_track)
+
+                    last_track = current_track
+
+                last_update_time = current_time
+                counter += 1
+
+    def record_ambient_data(self, label, csv_file_path="ambient_data.csv"):
+        # This is a function for recording the ambient condition data and taking an average at regular intervals
+        # This is for the purpose of data collection for data analysis and does not run when the iot_dj is actually playing
+
+        last_update_time = datetime.now().timestamp()
+        update_interval = 60
+        radar_data = []
+
+        # Check if CSV file exists and create it with headers if not
+        try:
+            with open(csv_file_path, mode='x', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=[
+                    'Timestamp',
+                    'Light RAW',
+                    'Light VOLTAGE',
+                    'Radar AVG',
+                    'Radar STDEV',
+                    'Label'
+                ])
+                writer.writeheader()
+        except FileExistsError:
+            print("File already exists")
+            pass  # If the file already exists, proceed without creating a new one
+
+        while True:
+            current_time = datetime.now().timestamp()
+
+            self.sensor_client.radar_readings_append(radar_data)
+
+            if current_time - last_update_time >= update_interval:
+                if radar_data:
+                    radar_avg = st.mean(radar_data)
+                    radar_stdev = st.stdev(radar_data)
+                    light = self.sensor_client.light_readings()
+
+                    environment_dict = {
+                        'Light RAW': light[0],
+                        'Light VOLTAGE': light[1],
+                        'Radar AVG': radar_avg,
+                        'Radar STDEV': radar_stdev,
+                        'Label': label
+                    }
+                    # Update ThingSpeak
+                    self.thingspeak_client.update_environment_channel(environment_dict)
+
+                    # Write to CSV
+                    with open(csv_file_path, mode='a', newline='') as csvfile:
+                        writer = csv.DictWriter(csvfile, fieldnames=environment_dict.keys())
+                        writer.writerow(environment_dict)
+
+                    # Debug output
+                    print(environment_dict)
+
+                    # Reset radar data and update time
+                    radar_data = []
+                    last_update_time = current_time
 
     def ambient_readings(self):
-        # Runs as a thread
-        # Appends ambient readings to class-wide lists
+        # To run as a thread when in playing state
+        # Appends readings to class-wide lists
 
         # The light reading is taken every 10 seconds
         
@@ -59,6 +144,9 @@ class iot_dj:
             self.sensor_client.radar_readings_append(self.global_radar_data)
 
             if current_time - last_update_time >= light_update_interval:
+                #light = self.sensor_client.light_readings()
+                #self.global_light_raw_data.append(light[0])
+                #self.global_light_volt_data.append(light[1])
                 self.sensor_client.light_raw_append(self.global_light_raw_data)
                 self.sensor_client.light_voltage_append(self.global_light_volt_data)
                 last_update_time = current_time
@@ -100,6 +188,7 @@ class iot_dj:
         print("Predicted Label:", decoded_prediction)
 
         return decoded_prediction
+    
 
 
     def select_song(self):
@@ -119,7 +208,7 @@ class iot_dj:
 
         is_playing = self.spotify_client.playback_state()["is_playing"]
 
-        # If no song is playing when the code first starts running it will select and start playing a song (provided there is an active player)
+        # If no song is playing when the code first starts running it will start playing a song provided there is an active player
         if not is_playing:
             print("not playing")
             song_selection = self.select_song()
