@@ -110,6 +110,7 @@ class iot_dj:
             return "Paused"
         else:
             playlist_selection = self.state_playlists[state_selection]
+            print(f"Playlist selection: {playlist_selection}")
             song_selection = self.spotify_client.get_random_song_from_playlist(playlist_selection)
         
             return song_selection
