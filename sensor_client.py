@@ -1,22 +1,15 @@
-from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
-from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
-from flask import Flask, redirect, request, jsonify, session
-import requests
 from datetime import datetime
-import time
-import urllib.parse
 import csv
 import serial
 import statistics as st
-import threading
-import os
-import time
 import busio
 import digitalio
 import board
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
+
+# Generative AI was used 
 
 
 class SensorClient:
