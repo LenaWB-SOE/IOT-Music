@@ -20,14 +20,14 @@ def index():
 
 @app.route('/login')
 def login():
-    scope = 'user-read-private user-read-email user-modify-playback-state user-read-currently-playing user-read-recently-played user-top-read user-read-playback-state'
-
+    #scope = 'user-read-private user-read-email user-modify-playback-state user-read-currently-playing user-read-recently-played user-top-read user-read-playback-state'
+    scope = 'user-modify-playback-state user-read-playback-state'
     params = {
         'client_id': CLIENT_ID,
         'response_type': 'code',
         'scope': scope,
         'redirect_uri': REDIRECT_URI,
-        'show_dialog': True #forces them to log in every time, for testing
+        'show_dialog': True #forces user to log in every time, for testing
     }
 
     auth_url = f"{AUTH_URL}?{urllib.parse.urlencode(params)}"
