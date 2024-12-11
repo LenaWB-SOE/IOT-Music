@@ -121,13 +121,13 @@ def run_application():
     IOT_DJ.play()
 
 
-    return redirect('/data-visualisation')
+    return redirect('/next')
     #return None
 
-@app.route('/data-visualisation')
-def data_visualisation():
+@app.route('/next')
+def next():
     
-    return "Data being recorded on <a href='https://thingspeak.mathworks.com/channels/2735338/private_show'>ThingSpeak</a>"
+    return "The IoT DJ is running!! :D"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
