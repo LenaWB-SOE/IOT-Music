@@ -95,9 +95,11 @@ def parse_sensor_data(buffer):
             except ValueError:
                 continue  # Ignore invalid data
         elif "ON" in packet:
-            results.append("ON")
+            pass
+            #results.append("ON")
         elif "OFF" in packet:
-            results.append("OFF")
+            pass
+            #results.append("OFF")
     return results, packets[-1]  # Return results and the last partial packet
 
 # Initialize an empty buffer
