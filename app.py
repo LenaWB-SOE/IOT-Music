@@ -2,14 +2,15 @@ from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, 
 from spotify_client import SpotifyClient
 from thingspeak_client import ThingSpeakClient
 from sensor_client import SensorClient
-#from Data_analysis import DataAnalysisClass
 from flask import Flask, redirect, request, jsonify, session
 import requests
 from datetime import datetime
-import time
-import urllib.parse
-import csv
+import urllib.parse # a module used here for combining components into URLs easily
 from iotdj import iot_dj
+
+# Approximately 90% of the code in this file came from the YouTube Tutorial by Imdad Codes: 'Spotify API OAuth - Automate Getting User Playlists (Complete Tutorial)' https://www.youtube.com/watch?v=olY_2MW4Eik
+# Flask Quickstart documentation was also referred to: https://flask.palletsprojects.com/en/stable/quickstart/#a-minimal-application
+# This was used as a framework to both understand OAuth 2.0 and Flask and implement it for my own specific use in def run_application
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY

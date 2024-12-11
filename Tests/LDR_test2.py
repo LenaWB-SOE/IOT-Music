@@ -24,7 +24,7 @@ mcp = MCP.MCP3008(spi, cs)
 chan0 = AnalogIn(mcp, MCP.P0)
 
 while True:
-    print('Raw ADC Value: ', chan0.value)
+    #print('Raw ADC Value: ', chan0.value)
     print('ADC Voltage: ' + str(chan0.voltage) + 'V')
     time.sleep(1)
 

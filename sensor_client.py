@@ -9,8 +9,12 @@ import board
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
-# Generative AI was used 
+# This file is run to collect data and store it in a csv file but the sensor client class is also deployed in iotdj where it is used to collect data more temporarily in arrays
+# Generative AI was used in a collaborative way for parse_sensor_data and radar_readings_appeand functions
 
+# the basic code for reading LDR values via the MCP3008 is from https://learn.adafruit.com/reading-a-analog-in-and-controlling-audio-volume-with-the-raspberry-pi/script credit below
+# SPDX-FileCopyrightText: 2019 Mikey Sklar for Adafruit Industries
+# SPDX-License-Identifier: MIT
 
 class SensorClient:
     def __init__(self):
@@ -95,7 +99,7 @@ def main(label, csv_file_path="ambient_data.csv"):
 
     # Initialize variables
     last_update_time = datetime.now().timestamp()
-    update_interval = 20
+    update_interval = 30
     radar_data = []
     #light_raw_data = []
     #light_volt_data = []
