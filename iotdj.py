@@ -108,7 +108,7 @@ class iot_dj:
 
     def select_song(self):
         read_data = self.get_ambient_metrics()
-        state_selection = self.determine_state(read_data)
+        state_selection = self.determine_state(read_data)[0]
         if state_selection == "Sleeping":
             self.spotify_client.pause_player()
             return "Paused"
