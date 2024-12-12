@@ -1,4 +1,4 @@
-from thingspeak_client import ThingSpeakClient
+#from thingspeak_client import ThingSpeakClient
 from datetime import datetime
 import csv
 import serial
