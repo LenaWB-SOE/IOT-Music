@@ -82,27 +82,27 @@ class iot_dj:
 
         new_data = pd.DataFrame.from_dict(ambient_metrics)
 
-        # # Predict and decode
-        # prediction = self.model.predict(new_data)
-        # decoded_prediction = self.encoder.inverse_transform(prediction)[0]
-
-        # print("Predicted Label:", decoded_prediction)
-
-        # Predict probabilities
-        probabilities = self.model.predict_proba(new_data)
-
-        # Get the predicted class and its confidence
-        predicted_index = probabilities.argmax(axis=1)[0]  # Index of the highest probability
-        confidence = probabilities[0, predicted_index]    # Confidence of the predicted class
-        decoded_prediction = self.encoder.inverse_transform([predicted_index])[0]
+        # Predict and decode
+        prediction = self.model.predict(new_data)
+        decoded_prediction = self.encoder.inverse_transform(prediction)[0]
 
         print("Predicted Label:", decoded_prediction)
-        print("Confidence:", confidence)
 
-        return decoded_prediction, confidence
+        # # Predict probabilities
+        # probabilities = self.model.predict_proba(new_data)
+
+        # # Get the predicted class and its confidence
+        # predicted_index = probabilities.argmax(axis=1)[0]  # Index of the highest probability
+        # confidence = probabilities[0, predicted_index]    # Confidence of the predicted class
+        # decoded_prediction = self.encoder.inverse_transform([predicted_index])[0]
+
+        # print("Predicted Label:", decoded_prediction)
+        # print("Confidence:", confidence)
+
+        # return decoded_prediction, confidence
 
 
-        #return decoded_prediction
+        return decoded_prediction
 
 
     def select_song(self):
