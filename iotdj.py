@@ -103,12 +103,12 @@ class iot_dj:
 
         return decoded_prediction, confidence
 
-
-
-
     def select_song(self):
         read_data = self.get_ambient_metrics()
         state_selection = self.determine_state(read_data)[0]
+        confidence = self.determine_state(read_data)[1]
+        if confidence < 0.8:
+            return "Unsure"
         if state_selection == "Sleeping":
             self.spotify_client.pause_player()
             return "Paused"
@@ -140,7 +140,8 @@ class iot_dj:
                 time.sleep(time_left_s - 10) #delays until it is 10 seconds until the end of the song
 
                 song_selection = self.select_song()
-                self.spotify_client.queue_song(song_selection)
+                if song_selection != "Unsure" or song_selection != "Paused":
+                    self.spotify_client.queue_song(song_selection)
                 time.sleep(11)
 
                 #what happens if someone skips a song and doesn't let it play all the way through?
