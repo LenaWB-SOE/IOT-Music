@@ -89,7 +89,7 @@ class DataAnalysisClass:
         plt.title('Pairwise Comparison by Label (Excluding "Wake up" and "Morning work")')
         plt.show()
 
-    def machine_learning(self, save_path="ml_models"):
+    def machine_learning(self, save_path="new_ml_models"):
         # Create a directory for saving model files if it doesn't exist
         os.makedirs(save_path, exist_ok=True)
 
@@ -142,7 +142,7 @@ class DataAnalysisClass:
 
         print(f"Model, scaler, and encoder saved in '{save_path}'.")
 
-    def machine_learning_2(self, save_path="ml_models"):
+    def machine_learning_2(self, save_path="new_ml_models"):
         # Create a directory for saving model files if it doesn't exist
         os.makedirs(save_path, exist_ok=True)
 
