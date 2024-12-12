@@ -9,6 +9,8 @@ from sklearn.metrics import classification_report, confusion_matrix
 import joblib
 import os
 
+# This code was developed in a collaborative way with generative AI where it is a approximated that about 70% is AI generated
+
 
 class DataAnalysisClass:
     def __init__(self, data_csv = "ambient_data.csv"):
@@ -115,6 +117,12 @@ class DataAnalysisClass:
         print("Classification Report:")
         print(classification_report(y_test, y_pred))
 
+        # Feature importance
+        print("Feature importance:")
+        importances = clf.feature_importances_
+        for feature, importance in zip(X.columns, importances):
+            print(f"{feature}: {importance:.4f}")
+
         # Confusion Matrix
         cm = confusion_matrix(y_test, y_pred)
         print("Confusion Matrix:")
@@ -128,16 +136,85 @@ class DataAnalysisClass:
         plt.ylabel("Actual")
         plt.show()
 
+        # Save the model, scaler, and encoder
+        joblib.dump(clf, f"{save_path}/trained_model.pkl")
+        joblib.dump(encoder, f"{save_path}/label_encoder.pkl")
+
+        print(f"Model, scaler, and encoder saved in '{save_path}'.")
+
+    def machine_learning_2(self, save_path="ml_models"):
+        # Create a directory for saving model files if it doesn't exist
+        os.makedirs(save_path, exist_ok=True)
+
+        # Encode labels as integers
+        encoder = LabelEncoder()
+        self.sensor_data['Label_encoded'] = encoder.fit_transform(self.sensor_data['Label'])
+
+        # Select features and target
+        X = self.sensor_data[['Light RAW', 'Light VOLTAGE', 'Radar AVG', 'Radar STDEV']]
+        y = self.sensor_data['Label_encoded']
+
+        # Check the class-to-label mapping
+        class_mapping = dict(zip(encoder.classes_, encoder.transform(encoder.classes_)))
+        print("Class-to-label mapping:", class_mapping)
+
+        # Split data into training, validation, and testing sets
+        X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.4, random_state=42)  # 60% training
+        X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)  # 20% validation, 20% test
+
+        # Train Random Forest model
+        clf = RandomForestClassifier(random_state=42)
+        clf.fit(X_train, y_train)
+
+        # Validate the model
+        y_val_pred = clf.predict(X_val)
+        print("Validation Report:")
+        print(classification_report(y_val, y_val_pred))
+
+        # Test the model
+        y_test_pred = clf.predict(X_test)
+        print("Test Report:")
+        print(classification_report(y_test, y_test_pred))
+        ##
+
         # Feature importance
+        print("Feature importance")
         importances = clf.feature_importances_
         for feature, importance in zip(X.columns, importances):
             print(f"{feature}: {importance:.4f}")
+
+        # Confusion Matrix
+        cmval = confusion_matrix(y_test, y_val_pred)
+        print("Confusion Matrix:")
+        print(cmval)
+
+        # Plot the confusion matrix as a heatmap
+        plt.figure(figsize=(6, 5))
+        sns.heatmap(cmval, annot=True, fmt="d", cmap="Blues", xticklabels=encoder.classes_, yticklabels=encoder.classes_)
+        plt.title("Confusion Matrix")
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+        plt.show()
+
+        # Confusion Matrix
+        cmtest = confusion_matrix(y_test, y_test_pred)
+        print("Confusion Matrix:")
+        print(cmtest)
+
+        # Plot the confusion matrix as a heatmap
+        plt.figure(figsize=(6, 5))
+        sns.heatmap(cmtest, annot=True, fmt="d", cmap="Blues", xticklabels=encoder.classes_, yticklabels=encoder.classes_)
+        plt.title("Confusion Matrix")
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+        plt.show()
 
         # Save the model, scaler, and encoder
         joblib.dump(clf, f"{save_path}/trained_model.pkl")
         joblib.dump(encoder, f"{save_path}/label_encoder.pkl")
 
         print(f"Model, scaler, and encoder saved in '{save_path}'.")
+
 
 
 
