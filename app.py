@@ -1,6 +1,6 @@
 from config import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, AUTH_URL, TOKEN_URL, API_BASE_URL, SECRET_KEY, TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY
 from spotify_client import SpotifyClient
-from thingspeak_client import ThingSpeakClient
+#from thingspeak_client import ThingSpeakClient
 from sensor_client import SensorClient
 from flask import Flask, redirect, request, jsonify, session
 import requests
@@ -96,13 +96,13 @@ def run_application():
     )
 
     #creating an instance of the ThingSpeakClient class
-    thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
+    #thingspeak_client = ThingSpeakClient(TS_FEATURES_WRITE_API_KEY, TS_SONGS_WRITE_API_KEY, TS_EVIRON_WRITE_API_KEY)
 
     #creating an instance of the SensorClient class
     sensor_client = SensorClient()
 
     #creating an instance of the iot_dj class
-    IOT_DJ = iot_dj(spotify_client, thingspeak_client, sensor_client)
+    IOT_DJ = iot_dj(spotify_client, sensor_client)
 
     #creating and instance of the DataAnalysisClass
     #Data_Analysis = DataAnalysisClass("ambient_data.csv")

@@ -7,10 +7,9 @@ import joblib
 import pandas as pd
 
 class iot_dj:
-    def __init__(self, spotify_client, thingspeak_client, sensor_client):
+    def __init__(self, spotify_client, sensor_client):
         #initialising variables for when a new iotdj object is created
         self.spotify_client = spotify_client
-        self.thingspeak_client = thingspeak_client
         self.sensor_client = sensor_client
         self.state_playlists = {
             "Dance": "spotify:playlist:1YNBItC3Z8fvWslhJHYFuG",
